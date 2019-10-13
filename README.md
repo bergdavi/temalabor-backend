@@ -1,0 +1,51 @@
+# Témalabor Backend
+
+A backend alkalmazás a következő url-eken érhető el:
+* https://temalabor2019.azurewebsites.net/api/ (proxy)
+* https://temalabor2019-backend.azurewebsites.net/ (közvetlen)
+
+A szolgáltatás Azure Web App-ként van host-olva, és ha ~20p-ig nem érkezik felé kérés automatikusan leáll. Ilyenkor a következő beérkező kérésre újraindul, de ez eltart 2-3 percig.
+
+Az API leírás megtalálható a repo /docs könyvtárában
+
+## A szolgáltatás kipróbálható a következő curl parancsokkal:
+
+### Bejelentkezés
+```
+curl -c cookie.txt -L https://temalabor2019-backend.azurewebsites.net/auth/login \
+  -d 'username=admin&password=admin'
+```
+Ekkor a curl elmenti a kapott session cookie-t a cookie.txt file-ba
+
+### Felhasználók lekérdezése
+```
+curl -b cookie.txt -L https://temalabor2019-backend.azurewebsites.net/users
+```
+
+### Kijelentkezés
+```
+curl -b cookie.txt -L https://temalabor2019-backend.azurewebsites.net/auth/logout -d ''
+```
+
+## Felhasználói jogosultságok
+
+3 felhasználói típus van különböző jogosultságokkal:
+
+* Felhasználó (user)
+  * Saját adatok lekérdezése (/user endpoint)
+* Ellenőr (inspector)
+  * Minden felhasználó adatának lekérdezése (/user/{userId} endpoint)
+* Adminisztrátor (admin)
+  * Minden felhasználó adatának lekérdezése (/user/{userId} endpoint)
+  * Összes felhasználó kilistázása (/users endpoint)
+  * Új tetszőleges típusú felhasználó felvétele (/register endpoint)
+  
+'user' típusú felhasználót bejelentkezés nélkül bárki létrehozhat (/register endpoint)
+
+## Jelenleg a rendszerbe 3 felhasználó van felvéve, ezek belépési adatai:
+* user / user
+* inspector / inspector
+* admin / admin
+
+
+Jelenleg az alkalmazás egy a docker konténerben található SQLite adatbázist használ, így a jelenleg benne lévő adatok a fejlesztés során eltűnhetnek
