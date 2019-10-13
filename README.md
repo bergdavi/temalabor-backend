@@ -12,8 +12,7 @@ Az API leírás megtalálható a repo /docs könyvtárában
 
 ### Bejelentkezés
 ```
-curl -c cookie.txt -L https://temalabor2019-backend.azurewebsites.net/auth/login \
-  -d 'username=admin&password=admin'
+curl -c cookie.txt -L https://temalabor2019-backend.azurewebsites.net/auth/login -d 'username=admin&password=admin'
 ```
 Ekkor a curl elmenti a kapott session cookie-t a cookie.txt file-ba
 
