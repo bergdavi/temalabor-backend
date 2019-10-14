@@ -1,11 +1,18 @@
 const ApplicationError = require('../../exceptions/ApplicationError');
 
-module.exports = function () {
+// Check user permission
+// hasPermission array can contain 'self', 'user', 'inspector', 'admin'
+// 'self' requires :userId request param, checks if the acessed user is the same as the logged in user
+module.exports = function (...hasPermission) {
     return function (req, res, next) {
-        console.log(req.params);
-        if(req.user.id !== req.params.userId && !(req.user.type === 'admin' || req.user.type === 'inspector')) {
-            return next(new ApplicationError(`User doesn't have permission to view this page`, 403));
+		if(hasPermission.includes("self")) {
+			if(req.user.id === req.params.userId) {
+				return next();
+			}
+		}
+        if(hasPermission.includes(req.user.type)) {
+        	return next();
         }
-        return next();
+        return next(new ApplicationError(`User does not have permission to view this page`, 403));
     };
 };

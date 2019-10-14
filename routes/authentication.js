@@ -22,7 +22,7 @@ router.post('/logout',
 );
 
 router.post('/login',
-    checkRequestParamsMW('username', 'password'),
+	// checkRequestParamsMW('email', 'password'),
     loginMW()
 );
 

@@ -15,7 +15,7 @@ const usersRouter = require('./routes/users');
 const authenticationRouter = require('./routes/authentication');
 
 passport.use('local', new LocalStrategy({
-        userNameField: 'email',
+        usernameField: 'email',
         passwordField: 'password',
     },
     function(email, password, done) {

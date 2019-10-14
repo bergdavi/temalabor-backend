@@ -8,7 +8,7 @@ module.exports = function () {
                 return next(err);
             }
             if (!user) {
-                return next(new ApplicationError('Wrong username or password'), 401);
+                return next(new ApplicationError('Wrong username or password', 401));
             }
             req.logIn(user, function(err) {
                 if (err) {
