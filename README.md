@@ -48,3 +48,25 @@ curl -b cookie.txt -L https://temalabor2019-backend.azurewebsites.net/auth/logou
 
 
 Jelenleg az alkalmazás egy a docker konténerben található SQLite adatbázist használ, így a jelenleg benne lévő adatok a fejlesztés során eltűnhetnek
+
+## Futtatás lokális környezetben
+
+Az alkalmazás alapértelmezetten a 3000-es portot használja
+
+### Node JS
+
+A futtatáshoz szükséges parancsok:
+
+```
+npm i
+
+npm start
+```
+
+### Docker
+
+Docker image letöltése Docker Hub-ról és futtatás:
+
+```
+docker run -p 3000:3000 bergdavi/temalabor-backend:latest
+```
