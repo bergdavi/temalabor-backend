@@ -7,13 +7,12 @@ module.exports = function () {
             if(!user) {
                 return next(new ApplicationError(`User with id ${req.params.userId} does not exist`, 400));
             }
-            return res.json({
-                id: user.id,
-                email: user.email,
-                name: user.name,
-                idCard: user.idCard,
-                type: user.type
-            });
+			user.update({
+				name: req.body.name,
+				idCard: req.body.idCard
+			}).then(function() {
+				return res.end("User data updated successfully");
+			});
         });
     };
 };

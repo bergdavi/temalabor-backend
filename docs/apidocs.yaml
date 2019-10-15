@@ -93,6 +93,24 @@ paths:
           content: {}
       security:
         - cookieAuth: []
+  /auth/password:
+    post:
+      tags:
+        - auth
+      summary: Change password for logged in user
+      operationId: changePassword
+      responses:
+        '200':
+          description: Password changed successfully
+          content: {}
+        '401':
+          description: 'Unauthorized, user not logged in'
+          content: {}
+        '403':
+          description: 'Wrong password'
+          content: {}
+      security:
+        - cookieAuth: []
   /user:
     get:
       tags:
@@ -161,19 +179,12 @@ paths:
         content:
           application/json:
             schema:
-              oneOf:
-                - type: object
-                  properties:
-                    name:
-                      type: string
-                    email:
-                      type: string
-                - type: object
-                  properties:
-                    oldPassword:
-                      type: string
-                    newPassword:
-                      type: string
+              type: object
+              properties:
+                name:
+                  type: string
+                idCard:
+                  type: string
         required: true
       responses:
         '200':

@@ -4,7 +4,8 @@ const checkUserLoginMW = require('../middlewares/authentication/checkUserLogin')
 const checkUserIdMW = require('../middlewares/authentication/checkUserId');
 const getUserDataMW = require('../middlewares/user/getUserData');
 const getOwnUserDataMW = require('../middlewares/user/getOwnUserData');
-const deleteUserMW = require('../middlewares/user/deleteUser')
+const deleteUserMW = require('../middlewares/user/deleteUser');
+const updateUserDataMW = require('../middlewares/user/updateUserData');
 
 router.get('/',
     checkUserLoginMW(),
@@ -15,6 +16,12 @@ router.get('/:userId',
     checkUserLoginMW(),
     checkUserIdMW('self', 'inspector', 'admin'),
     getUserDataMW()
+);
+
+router.post('/:userId',
+	checkUserLoginMW(),
+	checkUserIdMW('self', 'admin'),
+	updateUserDataMW()
 );
 
 router.delete('/:userId',
