@@ -1126,6 +1126,9 @@
                     <li data-group="Ticket" data-name="changeTicketData" class="">
                       <a href="#api-Ticket-changeTicketData">changeTicketData</a>
                     </li>
+                    <li data-group="Ticket" data-name="deleteTicket" class="">
+                      <a href="#api-Ticket-deleteTicket">deleteTicket</a>
+                    </li>
                     <li data-group="Ticket" data-name="getTicket" class="">
                       <a href="#api-Ticket-getTicket">getTicket</a>
                     </li>
@@ -1145,6 +1148,9 @@
                     <li data-group="TransportLine" data-name="changeLineData" class="">
                       <a href="#api-TransportLine-changeLineData">changeLineData</a>
                     </li>
+                    <li data-group="TransportLine" data-name="deleteLine" class="">
+                      <a href="#api-TransportLine-deleteLine">deleteLine</a>
+                    </li>
                     <li data-group="TransportLine" data-name="getLine" class="">
                       <a href="#api-TransportLine-getLine">getLine</a>
                     </li>
@@ -1154,6 +1160,9 @@
                   <li class="nav-header" data-group="User"><a href="#api-User">API Methods - User</a></li>
                     <li data-group="User" data-name="changeUserData" class="">
                       <a href="#api-User-changeUserData">changeUserData</a>
+                    </li>
+                    <li data-group="User" data-name="deleteUser" class="">
+                      <a href="#api-User-deleteUser">deleteUser</a>
                     </li>
                     <li data-group="User" data-name="getLoggedinUser" class="">
                       <a href="#api-User-getLoggedinUser">getLoggedinUser</a>
@@ -1173,6 +1182,9 @@
                     </li>
                     <li data-group="Vehicle" data-name="changeVehicleData" class="">
                       <a href="#api-Vehicle-changeVehicleData">changeVehicleData</a>
+                    </li>
+                    <li data-group="Vehicle" data-name="deleteVehicle" class="">
+                      <a href="#api-Vehicle-deleteVehicle">deleteVehicle</a>
                     </li>
                     <li data-group="Vehicle" data-name="getVehicle" class="">
                       <a href="#api-Vehicle-getVehicle">getVehicle</a>
@@ -3305,6 +3317,298 @@ except ApiException as e:
                         </article>
                       </div>
                       <hr>
+                    <div id="api-Ticket-deleteTicket">
+                      <article id="api-Ticket-deleteTicket-0" data-group="User" data-name="deleteTicket" data-version="0">
+                        <div class="pull-left">
+                          <h1>deleteTicket</h1>
+                          <p>Delete ticket</p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked"></p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="delete"><code><span class="pln">/ticket/{ticketId}</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-Ticket-deleteTicket-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Ticket-deleteTicket-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Ticket-deleteTicket-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Ticket-deleteTicket-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Ticket-deleteTicket-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Ticket-deleteTicket-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Ticket-deleteTicket-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Ticket-deleteTicket-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Ticket-deleteTicket-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Ticket-deleteTicket-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Ticket-deleteTicket-0-python">Python</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-Ticket-deleteTicket-0-curl">
+                            <pre class="prettyprint"><code class="language-bsh">curl -X DELETE "https://temalabor2019.azurewebsites.net/api//ticket/{ticketId}"</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-Ticket-deleteTicket-0-java">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
+import io.swagger.client.auth.*;
+import io.swagger.client.model.*;
+import io.swagger.client.api.TicketApi;
+
+import java.io.File;
+import java.util.*;
+
+public class TicketApiExample {
+
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+
+        // Configure API key authorization: cookieAuth
+        ApiKeyAuth cookieAuth = (ApiKeyAuth) defaultClient.getAuthentication("cookieAuth");
+        cookieAuth.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //cookieAuth.setApiKeyPrefix("Token");
+
+        TicketApi apiInstance = new TicketApi();
+        String ticketId = ticketId_example; // String | ID of ticket to be deleted, must be admin
+        try {
+            apiInstance.deleteTicket(ticketId);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling TicketApi#deleteTicket");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-Ticket-deleteTicket-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.TicketApi;
+
+public class TicketApiExample {
+
+    public static void main(String[] args) {
+        TicketApi apiInstance = new TicketApi();
+        String ticketId = ticketId_example; // String | ID of ticket to be deleted, must be admin
+        try {
+            apiInstance.deleteTicket(ticketId);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling TicketApi#deleteTicket");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-Ticket-deleteTicket-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-Ticket-deleteTicket-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
+// Configure API key authorization: (authentication scheme: cookieAuth)
+[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"session_id"];
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"session_id"];
+String *ticketId = ticketId_example; // ID of ticket to be deleted, must be admin
+
+TicketApi *apiInstance = [[TicketApi alloc] init];
+
+// Delete ticket
+[apiInstance deleteTicketWith:ticketId
+              completionHandler: ^(NSError* error) {
+                            if (error) {
+                                NSLog(@"Error: %@", error);
+                            }
+                        }];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Ticket-deleteTicket-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var PublicTransport = require('public_transport');
+var defaultClient = PublicTransport.ApiClient.instance;
+
+// Configure API key authorization: cookieAuth
+var cookieAuth = defaultClient.authentications['cookieAuth'];
+cookieAuth.apiKey = "YOUR API KEY"
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//cookieAuth.apiKeyPrefix['session_id'] = "Token"
+
+var api = new PublicTransport.TicketApi()
+var ticketId = ticketId_example; // {{String}} ID of ticket to be deleted, must be admin
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully.');
+  }
+};
+api.deleteTicket(ticketId, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-Ticket-deleteTicket-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-Ticket-deleteTicket-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using IO.Swagger.Api;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
+
+namespace Example
+{
+    public class deleteTicketExample
+    {
+        public void main()
+        {
+
+            // Configure API key authorization: cookieAuth
+            Configuration.Default.ApiKey.Add("session_id", "YOUR_API_KEY");
+            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+            // Configuration.Default.ApiKeyPrefix.Add("session_id", "Bearer");
+
+            var apiInstance = new TicketApi();
+            var ticketId = ticketId_example;  // String | ID of ticket to be deleted, must be admin
+
+            try
+            {
+                // Delete ticket
+                apiInstance.deleteTicket(ticketId);
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Exception when calling TicketApi.deleteTicket: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Ticket-deleteTicket-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+// Configure API key authorization: cookieAuth
+Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('session_id', 'YOUR_API_KEY');
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+// Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('session_id', 'Bearer');
+
+$api_instance = new Swagger\Client\ApiTicketApi();
+$ticketId = ticketId_example; // String | ID of ticket to be deleted, must be admin
+
+try {
+    $api_instance->deleteTicket($ticketId);
+} catch (Exception $e) {
+    echo 'Exception when calling TicketApi->deleteTicket: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Ticket-deleteTicket-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::SwaggerClient::Configuration;
+use WWW::SwaggerClient::TicketApi;
+
+# Configure API key authorization: cookieAuth
+$WWW::SwaggerClient::Configuration::api_key->{'session_id'} = 'YOUR_API_KEY';
+# uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+#$WWW::SwaggerClient::Configuration::api_key_prefix->{'session_id'} = "Bearer";
+
+my $api_instance = WWW::SwaggerClient::TicketApi->new();
+my $ticketId = ticketId_example; # String | ID of ticket to be deleted, must be admin
+
+eval { 
+    $api_instance->deleteTicket(ticketId => $ticketId);
+};
+if ($@) {
+    warn "Exception when calling TicketApi->deleteTicket: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Ticket-deleteTicket-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+# Configure API key authorization: cookieAuth
+swagger_client.configuration.api_key['session_id'] = 'YOUR_API_KEY'
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# swagger_client.configuration.api_key_prefix['session_id'] = 'Bearer'
+
+# create an instance of the API class
+api_instance = swagger_client.TicketApi()
+ticketId = ticketId_example # String | ID of ticket to be deleted, must be admin
+
+try: 
+    # Delete ticket
+    api_instance.delete_ticket(ticketId)
+except ApiException as e:
+    print("Exception when calling TicketApi->deleteTicket: %s\n" % e)</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Parameters</h2>
+
+                            <div class="methodsubtabletitle">Path parameters</div>
+                            <table id="methodsubtable">
+                                <tr>
+                                  <th width="150px">Name</th>
+                                  <th>Description</th>
+                                </tr>
+                                  <tr><td style="width:150px;">ticketId*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_deleteTicket_ticketId">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      String
+                                                  </span>
+                                  
+                                                      <div class="inner description">
+                                                          ID of ticket to be deleted, must be admin
+                                                      </div>
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                            </table>
+
+
+
+
+
+                          <h2>Responses</h2>
+                            <h3> Status: 200 - The ticket has been deleted </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                            <h3> Status: 401 - User not logged in </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                        </article>
+                      </div>
+                      <hr>
                     <div id="api-Ticket-getTicket">
                       <article id="api-Ticket-getTicket-0" data-group="User" data-name="getTicket" data-version="0">
                         <div class="pull-left">
@@ -5203,6 +5507,298 @@ except ApiException as e:
                         </article>
                       </div>
                       <hr>
+                    <div id="api-TransportLine-deleteLine">
+                      <article id="api-TransportLine-deleteLine-0" data-group="User" data-name="deleteLine" data-version="0">
+                        <div class="pull-left">
+                          <h1>deleteLine</h1>
+                          <p>Delete transport line</p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked">Delete transport line, must be admin</p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="delete"><code><span class="pln">/line/{lineId}</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-TransportLine-deleteLine-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-TransportLine-deleteLine-0-java">Java</a></li>
+                          <li class=""><a href="#examples-TransportLine-deleteLine-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-TransportLine-deleteLine-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-TransportLine-deleteLine-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-TransportLine-deleteLine-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-TransportLine-deleteLine-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-TransportLine-deleteLine-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-TransportLine-deleteLine-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-TransportLine-deleteLine-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-TransportLine-deleteLine-0-python">Python</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-TransportLine-deleteLine-0-curl">
+                            <pre class="prettyprint"><code class="language-bsh">curl -X DELETE "https://temalabor2019.azurewebsites.net/api//line/{lineId}"</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-TransportLine-deleteLine-0-java">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
+import io.swagger.client.auth.*;
+import io.swagger.client.model.*;
+import io.swagger.client.api.TransportLineApi;
+
+import java.io.File;
+import java.util.*;
+
+public class TransportLineApiExample {
+
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+
+        // Configure API key authorization: cookieAuth
+        ApiKeyAuth cookieAuth = (ApiKeyAuth) defaultClient.getAuthentication("cookieAuth");
+        cookieAuth.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //cookieAuth.setApiKeyPrefix("Token");
+
+        TransportLineApi apiInstance = new TransportLineApi();
+        String lineId = lineId_example; // String | Line ID of transport line to be deleted
+        try {
+            apiInstance.deleteLine(lineId);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling TransportLineApi#deleteLine");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-TransportLine-deleteLine-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.TransportLineApi;
+
+public class TransportLineApiExample {
+
+    public static void main(String[] args) {
+        TransportLineApi apiInstance = new TransportLineApi();
+        String lineId = lineId_example; // String | Line ID of transport line to be deleted
+        try {
+            apiInstance.deleteLine(lineId);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling TransportLineApi#deleteLine");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-TransportLine-deleteLine-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-TransportLine-deleteLine-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
+// Configure API key authorization: (authentication scheme: cookieAuth)
+[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"session_id"];
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"session_id"];
+String *lineId = lineId_example; // Line ID of transport line to be deleted
+
+TransportLineApi *apiInstance = [[TransportLineApi alloc] init];
+
+// Delete transport line
+[apiInstance deleteLineWith:lineId
+              completionHandler: ^(NSError* error) {
+                            if (error) {
+                                NSLog(@"Error: %@", error);
+                            }
+                        }];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-TransportLine-deleteLine-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var PublicTransport = require('public_transport');
+var defaultClient = PublicTransport.ApiClient.instance;
+
+// Configure API key authorization: cookieAuth
+var cookieAuth = defaultClient.authentications['cookieAuth'];
+cookieAuth.apiKey = "YOUR API KEY"
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//cookieAuth.apiKeyPrefix['session_id'] = "Token"
+
+var api = new PublicTransport.TransportLineApi()
+var lineId = lineId_example; // {{String}} Line ID of transport line to be deleted
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully.');
+  }
+};
+api.deleteLine(lineId, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-TransportLine-deleteLine-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-TransportLine-deleteLine-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using IO.Swagger.Api;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
+
+namespace Example
+{
+    public class deleteLineExample
+    {
+        public void main()
+        {
+
+            // Configure API key authorization: cookieAuth
+            Configuration.Default.ApiKey.Add("session_id", "YOUR_API_KEY");
+            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+            // Configuration.Default.ApiKeyPrefix.Add("session_id", "Bearer");
+
+            var apiInstance = new TransportLineApi();
+            var lineId = lineId_example;  // String | Line ID of transport line to be deleted
+
+            try
+            {
+                // Delete transport line
+                apiInstance.deleteLine(lineId);
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Exception when calling TransportLineApi.deleteLine: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-TransportLine-deleteLine-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+// Configure API key authorization: cookieAuth
+Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('session_id', 'YOUR_API_KEY');
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+// Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('session_id', 'Bearer');
+
+$api_instance = new Swagger\Client\ApiTransportLineApi();
+$lineId = lineId_example; // String | Line ID of transport line to be deleted
+
+try {
+    $api_instance->deleteLine($lineId);
+} catch (Exception $e) {
+    echo 'Exception when calling TransportLineApi->deleteLine: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-TransportLine-deleteLine-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::SwaggerClient::Configuration;
+use WWW::SwaggerClient::TransportLineApi;
+
+# Configure API key authorization: cookieAuth
+$WWW::SwaggerClient::Configuration::api_key->{'session_id'} = 'YOUR_API_KEY';
+# uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+#$WWW::SwaggerClient::Configuration::api_key_prefix->{'session_id'} = "Bearer";
+
+my $api_instance = WWW::SwaggerClient::TransportLineApi->new();
+my $lineId = lineId_example; # String | Line ID of transport line to be deleted
+
+eval { 
+    $api_instance->deleteLine(lineId => $lineId);
+};
+if ($@) {
+    warn "Exception when calling TransportLineApi->deleteLine: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-TransportLine-deleteLine-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+# Configure API key authorization: cookieAuth
+swagger_client.configuration.api_key['session_id'] = 'YOUR_API_KEY'
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# swagger_client.configuration.api_key_prefix['session_id'] = 'Bearer'
+
+# create an instance of the API class
+api_instance = swagger_client.TransportLineApi()
+lineId = lineId_example # String | Line ID of transport line to be deleted
+
+try: 
+    # Delete transport line
+    api_instance.delete_line(lineId)
+except ApiException as e:
+    print("Exception when calling TransportLineApi->deleteLine: %s\n" % e)</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Parameters</h2>
+
+                            <div class="methodsubtabletitle">Path parameters</div>
+                            <table id="methodsubtable">
+                                <tr>
+                                  <th width="150px">Name</th>
+                                  <th>Description</th>
+                                </tr>
+                                  <tr><td style="width:150px;">lineId*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_deleteLine_lineId">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      String
+                                                  </span>
+                                  
+                                                      <div class="inner description">
+                                                          Line ID of transport line to be deleted
+                                                      </div>
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                            </table>
+
+
+
+
+
+                          <h2>Responses</h2>
+                            <h3> Status: 200 - The line has been deleted </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                            <h3> Status: 400 - Bad request </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                        </article>
+                      </div>
+                      <hr>
                     <div id="api-TransportLine-getLine">
                       <article id="api-TransportLine-getLine-0" data-group="User" data-name="getLine" data-version="0">
                         <div class="pull-left">
@@ -6094,7 +6690,7 @@ except ApiException as e:
 
 
                           <h2>Responses</h2>
-                            <h3> Status: 200 - The user has been registered </h3>
+                            <h3> Status: 200 - The user has been modified </h3>
 
                             <ul class="nav nav-tabs nav-tabs-examples" >
                             </ul>
@@ -6103,6 +6699,298 @@ except ApiException as e:
                             </div>
 
                             <h3> Status: 400 - Bad request </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                        </article>
+                      </div>
+                      <hr>
+                    <div id="api-User-deleteUser">
+                      <article id="api-User-deleteUser-0" data-group="User" data-name="deleteUser" data-version="0">
+                        <div class="pull-left">
+                          <h1>deleteUser</h1>
+                          <p>Delete user</p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked"></p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="delete"><code><span class="pln">/user/{userId}</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-User-deleteUser-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-User-deleteUser-0-java">Java</a></li>
+                          <li class=""><a href="#examples-User-deleteUser-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-User-deleteUser-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-User-deleteUser-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-User-deleteUser-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-User-deleteUser-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-User-deleteUser-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-User-deleteUser-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-User-deleteUser-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-User-deleteUser-0-python">Python</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-User-deleteUser-0-curl">
+                            <pre class="prettyprint"><code class="language-bsh">curl -X DELETE "https://temalabor2019.azurewebsites.net/api//user/{userId}"</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-User-deleteUser-0-java">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
+import io.swagger.client.auth.*;
+import io.swagger.client.model.*;
+import io.swagger.client.api.UserApi;
+
+import java.io.File;
+import java.util.*;
+
+public class UserApiExample {
+
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+
+        // Configure API key authorization: cookieAuth
+        ApiKeyAuth cookieAuth = (ApiKeyAuth) defaultClient.getAuthentication("cookieAuth");
+        cookieAuth.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //cookieAuth.setApiKeyPrefix("Token");
+
+        UserApi apiInstance = new UserApi();
+        String userId = userId_example; // String | ID of user to be deleted, must be admin or logged in user
+        try {
+            apiInstance.deleteUser(userId);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling UserApi#deleteUser");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-User-deleteUser-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.UserApi;
+
+public class UserApiExample {
+
+    public static void main(String[] args) {
+        UserApi apiInstance = new UserApi();
+        String userId = userId_example; // String | ID of user to be deleted, must be admin or logged in user
+        try {
+            apiInstance.deleteUser(userId);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling UserApi#deleteUser");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-User-deleteUser-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-User-deleteUser-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
+// Configure API key authorization: (authentication scheme: cookieAuth)
+[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"session_id"];
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"session_id"];
+String *userId = userId_example; // ID of user to be deleted, must be admin or logged in user
+
+UserApi *apiInstance = [[UserApi alloc] init];
+
+// Delete user
+[apiInstance deleteUserWith:userId
+              completionHandler: ^(NSError* error) {
+                            if (error) {
+                                NSLog(@"Error: %@", error);
+                            }
+                        }];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-User-deleteUser-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var PublicTransport = require('public_transport');
+var defaultClient = PublicTransport.ApiClient.instance;
+
+// Configure API key authorization: cookieAuth
+var cookieAuth = defaultClient.authentications['cookieAuth'];
+cookieAuth.apiKey = "YOUR API KEY"
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//cookieAuth.apiKeyPrefix['session_id'] = "Token"
+
+var api = new PublicTransport.UserApi()
+var userId = userId_example; // {{String}} ID of user to be deleted, must be admin or logged in user
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully.');
+  }
+};
+api.deleteUser(userId, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-User-deleteUser-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-User-deleteUser-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using IO.Swagger.Api;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
+
+namespace Example
+{
+    public class deleteUserExample
+    {
+        public void main()
+        {
+
+            // Configure API key authorization: cookieAuth
+            Configuration.Default.ApiKey.Add("session_id", "YOUR_API_KEY");
+            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+            // Configuration.Default.ApiKeyPrefix.Add("session_id", "Bearer");
+
+            var apiInstance = new UserApi();
+            var userId = userId_example;  // String | ID of user to be deleted, must be admin or logged in user
+
+            try
+            {
+                // Delete user
+                apiInstance.deleteUser(userId);
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Exception when calling UserApi.deleteUser: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-User-deleteUser-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+// Configure API key authorization: cookieAuth
+Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('session_id', 'YOUR_API_KEY');
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+// Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('session_id', 'Bearer');
+
+$api_instance = new Swagger\Client\ApiUserApi();
+$userId = userId_example; // String | ID of user to be deleted, must be admin or logged in user
+
+try {
+    $api_instance->deleteUser($userId);
+} catch (Exception $e) {
+    echo 'Exception when calling UserApi->deleteUser: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-User-deleteUser-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::SwaggerClient::Configuration;
+use WWW::SwaggerClient::UserApi;
+
+# Configure API key authorization: cookieAuth
+$WWW::SwaggerClient::Configuration::api_key->{'session_id'} = 'YOUR_API_KEY';
+# uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+#$WWW::SwaggerClient::Configuration::api_key_prefix->{'session_id'} = "Bearer";
+
+my $api_instance = WWW::SwaggerClient::UserApi->new();
+my $userId = userId_example; # String | ID of user to be deleted, must be admin or logged in user
+
+eval { 
+    $api_instance->deleteUser(userId => $userId);
+};
+if ($@) {
+    warn "Exception when calling UserApi->deleteUser: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-User-deleteUser-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+# Configure API key authorization: cookieAuth
+swagger_client.configuration.api_key['session_id'] = 'YOUR_API_KEY'
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# swagger_client.configuration.api_key_prefix['session_id'] = 'Bearer'
+
+# create an instance of the API class
+api_instance = swagger_client.UserApi()
+userId = userId_example # String | ID of user to be deleted, must be admin or logged in user
+
+try: 
+    # Delete user
+    api_instance.delete_user(userId)
+except ApiException as e:
+    print("Exception when calling UserApi->deleteUser: %s\n" % e)</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Parameters</h2>
+
+                            <div class="methodsubtabletitle">Path parameters</div>
+                            <table id="methodsubtable">
+                                <tr>
+                                  <th width="150px">Name</th>
+                                  <th>Description</th>
+                                </tr>
+                                  <tr><td style="width:150px;">userId*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_deleteUser_userId">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      String
+                                                  </span>
+                                  
+                                                      <div class="inner description">
+                                                          ID of user to be deleted, must be admin or logged in user
+                                                      </div>
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                            </table>
+
+
+
+
+
+                          <h2>Responses</h2>
+                            <h3> Status: 200 - The user has been deleted </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                            <h3> Status: 401 - User not logged in </h3>
 
                             <ul class="nav nav-tabs nav-tabs-examples" >
                             </ul>
@@ -8003,6 +8891,298 @@ except ApiException as e:
                             </div>
 
                             <h3> Status: 400 - Bad request </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                        </article>
+                      </div>
+                      <hr>
+                    <div id="api-Vehicle-deleteVehicle">
+                      <article id="api-Vehicle-deleteVehicle-0" data-group="User" data-name="deleteVehicle" data-version="0">
+                        <div class="pull-left">
+                          <h1>deleteVehicle</h1>
+                          <p>Delete vehicle</p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked">Delete vehicle, must be admin</p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="delete"><code><span class="pln">/vehicle/{vehicleId}</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-Vehicle-deleteVehicle-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Vehicle-deleteVehicle-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Vehicle-deleteVehicle-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Vehicle-deleteVehicle-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Vehicle-deleteVehicle-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Vehicle-deleteVehicle-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Vehicle-deleteVehicle-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Vehicle-deleteVehicle-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Vehicle-deleteVehicle-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Vehicle-deleteVehicle-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Vehicle-deleteVehicle-0-python">Python</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-Vehicle-deleteVehicle-0-curl">
+                            <pre class="prettyprint"><code class="language-bsh">curl -X DELETE "https://temalabor2019.azurewebsites.net/api//vehicle/{vehicleId}"</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-Vehicle-deleteVehicle-0-java">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
+import io.swagger.client.auth.*;
+import io.swagger.client.model.*;
+import io.swagger.client.api.VehicleApi;
+
+import java.io.File;
+import java.util.*;
+
+public class VehicleApiExample {
+
+    public static void main(String[] args) {
+        ApiClient defaultClient = Configuration.getDefaultApiClient();
+
+        // Configure API key authorization: cookieAuth
+        ApiKeyAuth cookieAuth = (ApiKeyAuth) defaultClient.getAuthentication("cookieAuth");
+        cookieAuth.setApiKey("YOUR API KEY");
+        // Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+        //cookieAuth.setApiKeyPrefix("Token");
+
+        VehicleApi apiInstance = new VehicleApi();
+        String vehicleId = vehicleId_example; // String | ID of vehicle to be deleted
+        try {
+            apiInstance.deleteVehicle(vehicleId);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling VehicleApi#deleteVehicle");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-Vehicle-deleteVehicle-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.VehicleApi;
+
+public class VehicleApiExample {
+
+    public static void main(String[] args) {
+        VehicleApi apiInstance = new VehicleApi();
+        String vehicleId = vehicleId_example; // String | ID of vehicle to be deleted
+        try {
+            apiInstance.deleteVehicle(vehicleId);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling VehicleApi#deleteVehicle");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-Vehicle-deleteVehicle-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-Vehicle-deleteVehicle-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">Configuration *apiConfig = [Configuration sharedConfig];
+// Configure API key authorization: (authentication scheme: cookieAuth)
+[apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"session_id"];
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+//[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"session_id"];
+String *vehicleId = vehicleId_example; // ID of vehicle to be deleted
+
+VehicleApi *apiInstance = [[VehicleApi alloc] init];
+
+// Delete vehicle
+[apiInstance deleteVehicleWith:vehicleId
+              completionHandler: ^(NSError* error) {
+                            if (error) {
+                                NSLog(@"Error: %@", error);
+                            }
+                        }];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Vehicle-deleteVehicle-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var PublicTransport = require('public_transport');
+var defaultClient = PublicTransport.ApiClient.instance;
+
+// Configure API key authorization: cookieAuth
+var cookieAuth = defaultClient.authentications['cookieAuth'];
+cookieAuth.apiKey = "YOUR API KEY"
+// Uncomment the following line to set a prefix for the API key, e.g. "Token" (defaults to null)
+//cookieAuth.apiKeyPrefix['session_id'] = "Token"
+
+var api = new PublicTransport.VehicleApi()
+var vehicleId = vehicleId_example; // {{String}} ID of vehicle to be deleted
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully.');
+  }
+};
+api.deleteVehicle(vehicleId, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-Vehicle-deleteVehicle-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-Vehicle-deleteVehicle-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using IO.Swagger.Api;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
+
+namespace Example
+{
+    public class deleteVehicleExample
+    {
+        public void main()
+        {
+
+            // Configure API key authorization: cookieAuth
+            Configuration.Default.ApiKey.Add("session_id", "YOUR_API_KEY");
+            // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+            // Configuration.Default.ApiKeyPrefix.Add("session_id", "Bearer");
+
+            var apiInstance = new VehicleApi();
+            var vehicleId = vehicleId_example;  // String | ID of vehicle to be deleted
+
+            try
+            {
+                // Delete vehicle
+                apiInstance.deleteVehicle(vehicleId);
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Exception when calling VehicleApi.deleteVehicle: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Vehicle-deleteVehicle-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+// Configure API key authorization: cookieAuth
+Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('session_id', 'YOUR_API_KEY');
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+// Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('session_id', 'Bearer');
+
+$api_instance = new Swagger\Client\ApiVehicleApi();
+$vehicleId = vehicleId_example; // String | ID of vehicle to be deleted
+
+try {
+    $api_instance->deleteVehicle($vehicleId);
+} catch (Exception $e) {
+    echo 'Exception when calling VehicleApi->deleteVehicle: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Vehicle-deleteVehicle-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::SwaggerClient::Configuration;
+use WWW::SwaggerClient::VehicleApi;
+
+# Configure API key authorization: cookieAuth
+$WWW::SwaggerClient::Configuration::api_key->{'session_id'} = 'YOUR_API_KEY';
+# uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+#$WWW::SwaggerClient::Configuration::api_key_prefix->{'session_id'} = "Bearer";
+
+my $api_instance = WWW::SwaggerClient::VehicleApi->new();
+my $vehicleId = vehicleId_example; # String | ID of vehicle to be deleted
+
+eval { 
+    $api_instance->deleteVehicle(vehicleId => $vehicleId);
+};
+if ($@) {
+    warn "Exception when calling VehicleApi->deleteVehicle: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Vehicle-deleteVehicle-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+# Configure API key authorization: cookieAuth
+swagger_client.configuration.api_key['session_id'] = 'YOUR_API_KEY'
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# swagger_client.configuration.api_key_prefix['session_id'] = 'Bearer'
+
+# create an instance of the API class
+api_instance = swagger_client.VehicleApi()
+vehicleId = vehicleId_example # String | ID of vehicle to be deleted
+
+try: 
+    # Delete vehicle
+    api_instance.delete_vehicle(vehicleId)
+except ApiException as e:
+    print("Exception when calling VehicleApi->deleteVehicle: %s\n" % e)</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Parameters</h2>
+
+                            <div class="methodsubtabletitle">Path parameters</div>
+                            <table id="methodsubtable">
+                                <tr>
+                                  <th width="150px">Name</th>
+                                  <th>Description</th>
+                                </tr>
+                                  <tr><td style="width:150px;">vehicleId*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_deleteVehicle_vehicleId">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      String
+                                                  </span>
+                                  
+                                                      <div class="inner description">
+                                                          ID of vehicle to be deleted
+                                                      </div>
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                            </table>
+
+
+
+
+
+                          <h2>Responses</h2>
+                            <h3> Status: 200 - The vehicle has been deleted </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                            <h3> Status: 401 - User not logged in </h3>
 
                             <ul class="nav nav-tabs nav-tabs-examples" >
                             </ul>
