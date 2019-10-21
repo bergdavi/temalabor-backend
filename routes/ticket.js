@@ -22,13 +22,13 @@ router.get('/:ticketId',
 
 router.post('/:ticketId',
 	checkUserLoginMW(),
-	checkUserIdMW('self', 'admin'),
+	checkUserIdMW('admin'),
 	updateTicketDataMW()
 );
 
 router.delete('/:ticketId',
 	checkUserLoginMW(),
-    checkUserIdMW('self', 'admin'),
+    checkUserIdMW('admin'),
 	deleteTicketMW()
 );
 

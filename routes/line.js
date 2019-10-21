@@ -20,13 +20,13 @@ router.get('/:lineId',
 
 router.post('/:lineId',
 	checkUserLoginMW(),
-	checkUserIdMW('self', 'admin'),
+	checkUserIdMW('admin'),
 	updateLineDataMW()
 );
 
 router.delete('/:userId',
 	checkUserLoginMW(),
-    checkUserIdMW('self', 'admin'),
+    checkUserIdMW('admin'),
 	deleteLineMW()
 );
 
