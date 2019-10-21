@@ -107,7 +107,7 @@ paths:
           description: 'Unauthorized, user not logged in'
           content: {}
         '403':
-          description: 'Wrong password'
+          description: Wrong password
           content: {}
       security:
         - cookieAuth: []
@@ -357,10 +357,20 @@ paths:
                     description: Type ID
                   validFor:
                     type: integer
-                    description: 'Validiity of tickets in days, 0 if valid for line'
+                    description: 'Validiity of tickets in days, null if valid for single travel'
                   line:
+                    type: object
+                    description: 'Line the ticket is valid on, null if valid on all lines'
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      type:
+                        type: string
+                  price:
                     type: integer
-                    description: 'Line the ticket is valid on, * if valid on all lines'
+                    description: 'Price of ticket in HUF'
         '404':
           description: Ticket type not found
           content: {}
@@ -389,6 +399,8 @@ paths:
                   type: integer
                 line:
                   type: string
+                price:
+                  type: integer
         required: true
       responses:
         '200':
@@ -438,12 +450,26 @@ paths:
                   properties:
                     type:
                       type: string
+                      description: Ticket type
                     typeId:
-                      type: integer
-                    name:
                       type: string
+                      description: Type ID
+                    validFor:
+                      type: integer
+                      description: 'Validiity of tickets in days, null if valid for single travel'
+                    line:
+                      type: object
+                      description: 'Line the ticket is valid on, null if valid on all lines'
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        type:
+                          type: string
                     price:
                       type: integer
+                      description: 'Price of ticket in HUF'
   /tickets/buy:
     post:
       tags:
@@ -885,6 +911,9 @@ components:
         type:
           type: string
           description: 'Type of line, e.g. bus, tram, etc.'
+        name:
+          type: string
+          description: 'Name of the line e.g. M3'
     Vehicle:
       type: object
       properties:
@@ -902,4 +931,4 @@ components:
       type: apiKey
       in: cookie
       name: session_id
-      description: 'Session id will be porvided in cookie on login request, and is required for any future requests that requires authorization'
+      description: 'Session id will be provided in cookie on login request, and is required for any future requests that requires authorization'

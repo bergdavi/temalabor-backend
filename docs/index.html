@@ -787,6 +787,9 @@
     },
     "line" : {
       "type" : "string"
+    },
+    "price" : {
+      "type" : "integer"
     }
   }
 };
@@ -906,32 +909,33 @@
     },
     "validFor" : {
       "type" : "integer",
-      "description" : "Validiity of tickets in days, 0 if valid for line"
+      "description" : "Validiity of tickets in days, null if valid for single travel"
     },
     "line" : {
+      "$ref" : "#/components/schemas/inline_response_200_2_line"
+    },
+    "price" : {
       "type" : "integer",
-      "description" : "Line the ticket is valid on, * if valid on all lines"
+      "description" : "Price of ticket in HUF"
     }
   }
 };
-            defs.inline_response_200_3 = {
+            defs.inline_response_200_2_line = {
   "type" : "object",
   "properties" : {
-    "type" : {
+    "id" : {
       "type" : "string"
-    },
-    "typeId" : {
-      "type" : "integer"
     },
     "name" : {
       "type" : "string"
     },
-    "price" : {
-      "type" : "integer"
+    "type" : {
+      "type" : "string"
     }
-  }
+  },
+  "description" : "Line the ticket is valid on, null if valid on all lines"
 };
-            defs.inline_response_200_4 = {
+            defs.inline_response_200_3 = {
   "type" : "object",
   "properties" : {
     "status" : {
@@ -952,7 +956,7 @@
     }
   }
 };
-            defs.inline_response_200_5 = {
+            defs.inline_response_200_4 = {
   "type" : "object",
   "properties" : {
     "number" : {
@@ -969,7 +973,7 @@
     }
   }
 };
-            defs.inline_response_200_6 = {
+            defs.inline_response_200_5 = {
   "type" : "object",
   "properties" : {
     "number" : {
@@ -986,7 +990,7 @@
     }
   }
 };
-            defs.inline_response_200_7 = {
+            defs.inline_response_200_6 = {
   "type" : "object",
   "properties" : {
     "licencePlate" : {
@@ -1013,6 +1017,10 @@
     "type" : {
       "type" : "string",
       "description" : "Type of line, e.g. bus, tram, etc."
+    },
+    "name" : {
+      "type" : "string",
+      "description" : "Name of the line e.g. M3"
     }
   }
 };
@@ -3960,7 +3968,7 @@ public class TicketApiExample {
         
         TicketApi apiInstance = new TicketApi();
         try {
-            array[inline_response_200_3] result = apiInstance.getTickets();
+            array[inline_response_200_2] result = apiInstance.getTickets();
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling TicketApi#getTickets");
@@ -3978,7 +3986,7 @@ public class TicketApiExample {
     public static void main(String[] args) {
         TicketApi apiInstance = new TicketApi();
         try {
-            array[inline_response_200_3] result = apiInstance.getTickets();
+            array[inline_response_200_2] result = apiInstance.getTickets();
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling TicketApi#getTickets");
@@ -3997,7 +4005,7 @@ TicketApi *apiInstance = [[TicketApi alloc] init];
 
 // Get data for available tickets
 [apiInstance getTicketsWithCompletionHandler: 
-              ^(array[inline_response_200_3] output, NSError* error) {
+              ^(array[inline_response_200_2] output, NSError* error) {
                             if (output) {
                                 NSLog(@"%@", output);
                             }
@@ -4045,7 +4053,7 @@ namespace Example
             try
             {
                 // Get data for available tickets
-                array[inline_response_200_3] result = apiInstance.getTickets();
+                array[inline_response_200_2] result = apiInstance.getTickets();
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -4137,7 +4145,7 @@ except ApiException as e:
       "schema" : {
         "type" : "array",
         "items" : {
-          "$ref" : "#/components/schemas/inline_response_200_3"
+          "$ref" : "#/components/schemas/inline_response_200_2"
         },
         "x-content-type" : "application/json"
       }
@@ -4228,7 +4236,7 @@ public class TicketApiExample {
         TicketApi apiInstance = new TicketApi();
         Body_7 body = ; // Body_7 | Ticket ID to be inspected
         try {
-            inline_response_200_4 result = apiInstance.inspectTicket(body);
+            inline_response_200_3 result = apiInstance.inspectTicket(body);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling TicketApi#inspectTicket");
@@ -4247,7 +4255,7 @@ public class TicketApiExample {
         TicketApi apiInstance = new TicketApi();
         Body_7 body = ; // Body_7 | Ticket ID to be inspected
         try {
-            inline_response_200_4 result = apiInstance.inspectTicket(body);
+            inline_response_200_3 result = apiInstance.inspectTicket(body);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling TicketApi#inspectTicket");
@@ -4272,7 +4280,7 @@ TicketApi *apiInstance = [[TicketApi alloc] init];
 
 // Inspect a ticket
 [apiInstance inspectTicketWith:body
-              completionHandler: ^(inline_response_200_4 output, NSError* error) {
+              completionHandler: ^(inline_response_200_3 output, NSError* error) {
                             if (output) {
                                 NSLog(@"%@", output);
                             }
@@ -4334,7 +4342,7 @@ namespace Example
             try
             {
                 // Inspect a ticket
-                inline_response_200_4 result = apiInstance.inspectTicket(body);
+                inline_response_200_3 result = apiInstance.inspectTicket(body);
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -4485,7 +4493,7 @@ except ApiException as e:
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/inline_response_200_4"
+        "$ref" : "#/components/schemas/inline_response_200_3"
       }
     }
   }
@@ -5849,7 +5857,7 @@ public class TransportLineApiExample {
         TransportLineApi apiInstance = new TransportLineApi();
         String lineId = lineId_example; // String | Line ID of transport line to return
         try {
-            inline_response_200_5 result = apiInstance.getLine(lineId);
+            inline_response_200_4 result = apiInstance.getLine(lineId);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling TransportLineApi#getLine");
@@ -5868,7 +5876,7 @@ public class TransportLineApiExample {
         TransportLineApi apiInstance = new TransportLineApi();
         String lineId = lineId_example; // String | Line ID of transport line to return
         try {
-            inline_response_200_5 result = apiInstance.getLine(lineId);
+            inline_response_200_4 result = apiInstance.getLine(lineId);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling TransportLineApi#getLine");
@@ -5888,7 +5896,7 @@ TransportLineApi *apiInstance = [[TransportLineApi alloc] init];
 
 // Get data for specific transport line
 [apiInstance getLineWith:lineId
-              completionHandler: ^(inline_response_200_5 output, NSError* error) {
+              completionHandler: ^(inline_response_200_4 output, NSError* error) {
                             if (output) {
                                 NSLog(@"%@", output);
                             }
@@ -5939,7 +5947,7 @@ namespace Example
             try
             {
                 // Get data for specific transport line
-                inline_response_200_5 result = apiInstance.getLine(lineId);
+                inline_response_200_4 result = apiInstance.getLine(lineId);
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -6061,7 +6069,7 @@ except ApiException as e:
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/inline_response_200_5"
+        "$ref" : "#/components/schemas/inline_response_200_4"
       }
     }
   }
@@ -6150,7 +6158,7 @@ public class TransportLineApiExample {
         
         TransportLineApi apiInstance = new TransportLineApi();
         try {
-            array[inline_response_200_6] result = apiInstance.getTransportLines();
+            array[inline_response_200_5] result = apiInstance.getTransportLines();
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling TransportLineApi#getTransportLines");
@@ -6168,7 +6176,7 @@ public class TransportLineApiExample {
     public static void main(String[] args) {
         TransportLineApi apiInstance = new TransportLineApi();
         try {
-            array[inline_response_200_6] result = apiInstance.getTransportLines();
+            array[inline_response_200_5] result = apiInstance.getTransportLines();
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling TransportLineApi#getTransportLines");
@@ -6187,7 +6195,7 @@ TransportLineApi *apiInstance = [[TransportLineApi alloc] init];
 
 // Get data for all transport lines
 [apiInstance getTransportLinesWithCompletionHandler: 
-              ^(array[inline_response_200_6] output, NSError* error) {
+              ^(array[inline_response_200_5] output, NSError* error) {
                             if (output) {
                                 NSLog(@"%@", output);
                             }
@@ -6235,7 +6243,7 @@ namespace Example
             try
             {
                 // Get data for all transport lines
-                array[inline_response_200_6] result = apiInstance.getTransportLines();
+                array[inline_response_200_5] result = apiInstance.getTransportLines();
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -6327,7 +6335,7 @@ except ApiException as e:
       "schema" : {
         "type" : "array",
         "items" : {
-          "$ref" : "#/components/schemas/inline_response_200_6"
+          "$ref" : "#/components/schemas/inline_response_200_5"
         },
         "x-content-type" : "application/json"
       }
@@ -9243,7 +9251,7 @@ public class VehicleApiExample {
         VehicleApi apiInstance = new VehicleApi();
         String vehicleId = vehicleId_example; // String | ID of vehicle to return
         try {
-            inline_response_200_7 result = apiInstance.getVehicle(vehicleId);
+            inline_response_200_6 result = apiInstance.getVehicle(vehicleId);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling VehicleApi#getVehicle");
@@ -9262,7 +9270,7 @@ public class VehicleApiExample {
         VehicleApi apiInstance = new VehicleApi();
         String vehicleId = vehicleId_example; // String | ID of vehicle to return
         try {
-            inline_response_200_7 result = apiInstance.getVehicle(vehicleId);
+            inline_response_200_6 result = apiInstance.getVehicle(vehicleId);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling VehicleApi#getVehicle");
@@ -9282,7 +9290,7 @@ VehicleApi *apiInstance = [[VehicleApi alloc] init];
 
 // Get data for specific vehicle
 [apiInstance getVehicleWith:vehicleId
-              completionHandler: ^(inline_response_200_7 output, NSError* error) {
+              completionHandler: ^(inline_response_200_6 output, NSError* error) {
                             if (output) {
                                 NSLog(@"%@", output);
                             }
@@ -9333,7 +9341,7 @@ namespace Example
             try
             {
                 // Get data for specific vehicle
-                inline_response_200_7 result = apiInstance.getVehicle(vehicleId);
+                inline_response_200_6 result = apiInstance.getVehicle(vehicleId);
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -9455,7 +9463,7 @@ except ApiException as e:
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/inline_response_200_7"
+        "$ref" : "#/components/schemas/inline_response_200_6"
       }
     }
   }

@@ -10,9 +10,13 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 
 const indexRouter = require('./routes/index');
+const authenticationRouter = require('./routes/authentication');
 const userRouter = require('./routes/user');
 const usersRouter = require('./routes/users');
-const authenticationRouter = require('./routes/authentication');
+const lineRouter = require('./routes/line');
+const linesRouter = require('./routes/lines');
+const ticketRouter = require('./routes/ticket');
+const ticketsRouter = require('./routes/tickets');
 
 passport.use('local', new LocalStrategy({
         usernameField: 'email',
@@ -65,10 +69,17 @@ app.use(passport.session());
 
 
 app.use('/', indexRouter);
+
 app.use('/auth', authenticationRouter);
+
 app.use('/user', userRouter);
 app.use('/users', usersRouter);
 
+app.use('/line', lineRouter);
+app.use('/lines', linesRouter);
+
+app.use('/ticket', ticketRouter);
+app.use('/tickets', ticketsRouter);
 
 // Default error handler
 app.use(function (err, req, res, next) {

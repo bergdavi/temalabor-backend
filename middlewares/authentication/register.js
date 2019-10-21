@@ -5,7 +5,7 @@ const ApplicationError = require('../../exceptions/ApplicationError');
 
 module.exports = function () {
     return function (req, res, next) {
-        // If email is not taken salt + hash password
+        // Salt + hash password
         bcrypt.hash(req.body.password, 10).then((hash) => {
             models.User.create({
                 name: req.body.name,
@@ -17,7 +17,7 @@ module.exports = function () {
                 if (user) {
                     res.json({status: 'ok', description: 'User created successfully'});
                 } else {
-                    res.status(500).send('Error in insert new record');
+                    return next(new ApplicationError('Error while creating user', 500));
                 }
             });
         });
