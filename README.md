@@ -25,6 +25,16 @@ curl -b cookie.txt -L https://temalabor2019-backend.azurewebsites.net/users
 ```
 curl -b cookie.txt -L https://temalabor2019-backend.azurewebsites.net/auth/logout -d ''
 ```
+## Implementált végontok
+
+* /auth
+  * /auth/register
+  * /auth/login
+  * /auth/logout
+* /user
+  * /user
+  * /user/{userId} (get, post, delete)
+  * /users
 
 ## Felhasználói jogosultságok
 
@@ -55,9 +65,11 @@ Az alkalmazás alapértelmezetten a 3000-es portot használja
 
 ### Node JS
 
-A futtatáshoz szükséges parancsok:
+A futtatáshoz szükséges parancsok (a projekt gyökérkönyvtárában):
 
 ```
+mkdir data
+
 npm i
 
 npm start
