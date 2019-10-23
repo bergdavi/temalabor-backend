@@ -3,9 +3,15 @@ const ApplicationError = require('../../exceptions/ApplicationError');
 
 module.exports = function () {
     return function (req, res, next) {
+        if(req.body.validFor) {
+            if(!['day', 'hour'].includes(req.body.validTimeUnit)) {
+                return next(new ApplicationError('If validFor is given, validFor is required, and must be "day" or "hour"', 400));
+            }
+        }
         models.Ticket.create({
             type: req.body.type,
             validFor: req.body.validFor,
+            validTimeUnit: req.body.validTimeUnit,
             line: req.body.line,
             price: req.body.price
         }).then(function(ticket) {

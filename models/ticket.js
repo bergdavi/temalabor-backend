@@ -8,7 +8,9 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true
         },
         type: DataTypes.STRING,
+        validFrom: DataTypes.DATE,
         validFor: DataTypes.INTEGER,
+        validTimeUnit: DataTypes.STRING,
 		line: {
 			type: DataTypes.STRING,
 			allowNull: true,
@@ -19,6 +21,27 @@ module.exports = (sequelize, DataTypes) => {
 		},
         price: DataTypes.INTEGER
     });
+
+    Ticket.prototype.getExpiration = function (startDate) {
+        if(!this.validFor) {
+            return null;
+        }
+        if(!startDate) {
+            startDate = this.validFrom;
+        }
+        const timeZoneOffset = 2;
+        switch (this.validTimeUnit) {
+            case 'day':
+                let endDate = new Date(startDate.getTime() + this.validFor * 1000 * 60 * 60 * 24);
+                endDate.setUTCHours(23-timeZoneOffset, 59, 59, 999);
+                return endDate;
+            case 'hour':
+                return new Date(startDate.getTime() + this.validFor * 1000 * 60 * 60);
+            default:
+                throw "Wrong time unit";
+        }
+
+    };
 
     Ticket.associate = models => {
         Ticket.belongsTo(models.Line, {foreignKey: 'line'});

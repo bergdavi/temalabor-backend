@@ -786,7 +786,11 @@
     },
     "validFor" : {
       "type" : "integer",
-      "description" : "Validity of ticket in days, if not given ticket is valid for a single line"
+      "description" : "Validity of ticket, if not given ticket is valid for a single line"
+    },
+    "validTimeUnit" : {
+      "type" : "string",
+      "description" : "Time unit of ticket validity, can be \"hour\" or \"day\", required if validFor is given"
     },
     "price" : {
       "type" : "integer",
@@ -805,7 +809,12 @@
       "type" : "string"
     },
     "validFor" : {
-      "type" : "integer"
+      "type" : "integer",
+      "description" : "Validity of ticket, can be null"
+    },
+    "validTimeUnit" : {
+      "type" : "string",
+      "description" : "Time unit of ticket validity, can be \"hour\" or \"day\""
     },
     "line" : {
       "type" : "string"
@@ -922,6 +931,10 @@
       "type" : "integer",
       "description" : "Validiity of tickets in days, null if valid for single travel"
     },
+    "validTimeUnit" : {
+      "type" : "string",
+      "description" : "Time unit of ticket validity, can be \"hour\" or \"day\""
+    },
     "line" : {
       "$ref" : "#/components/schemas/inline_response_200_2_line"
     },
@@ -949,6 +962,51 @@
             defs.inline_response_200_3 = {
   "type" : "object",
   "properties" : {
+    "typeId" : {
+      "type" : "string",
+      "description" : "Ticket type id"
+    },
+    "startDate" : {
+      "type" : "string",
+      "description" : "Start datetime of ticket validity, ISO 8601 format"
+    },
+    "expiryDate" : {
+      "type" : "string",
+      "description" : "End datetime of ticket validity, ISO 8601 format"
+    }
+  }
+};
+            defs.inline_response_200_4 = {
+  "type" : "object",
+  "properties" : {
+    "type" : {
+      "type" : "string",
+      "description" : "Ticket type"
+    },
+    "typeId" : {
+      "type" : "string",
+      "description" : "Type ID"
+    },
+    "validFor" : {
+      "type" : "integer",
+      "description" : "Validiity of tickets, null if valid for single travel"
+    },
+    "validTimeUnit" : {
+      "type" : "string",
+      "description" : "Time unit of ticket validity, can be \"hour\" or \"day\""
+    },
+    "line" : {
+      "$ref" : "#/components/schemas/inline_response_200_2_line"
+    },
+    "price" : {
+      "type" : "integer",
+      "description" : "Price of ticket in HUF"
+    }
+  }
+};
+            defs.inline_response_200_5 = {
+  "type" : "object",
+  "properties" : {
     "status" : {
       "type" : "string",
       "description" : "Status of the ticket, can be valid, expired, invalid"
@@ -967,7 +1025,7 @@
     }
   }
 };
-            defs.inline_response_200_4 = {
+            defs.inline_response_200_6 = {
   "type" : "object",
   "properties" : {
     "name" : {
@@ -984,7 +1042,7 @@
     }
   }
 };
-            defs.inline_response_200_5 = {
+            defs.inline_response_200_7 = {
   "type" : "object",
   "properties" : {
     "name" : {
@@ -1001,7 +1059,7 @@
     }
   }
 };
-            defs.inline_response_200_6 = {
+            defs.inline_response_200_8 = {
   "type" : "object",
   "properties" : {
     "licencePlate" : {
@@ -1009,7 +1067,7 @@
       "description" : "Licence plate"
     },
     "line" : {
-      "$ref" : "#/components/schemas/inline_response_200_6_line"
+      "$ref" : "#/components/schemas/inline_response_200_8_line"
     },
     "id" : {
       "type" : "string",
@@ -1017,7 +1075,7 @@
     }
   }
 };
-            defs.inline_response_200_6_line = {
+            defs.inline_response_200_8_line = {
   "type" : "object",
   "properties" : {
     "id" : {
@@ -1032,7 +1090,7 @@
   },
   "description" : "Line the vehicle belongs to, can be null"
 };
-            defs.inline_response_200_7 = {
+            defs.inline_response_200_9 = {
   "type" : "object",
   "properties" : {
     "type" : {
@@ -1043,7 +1101,7 @@
       "type" : "string"
     },
     "line" : {
-      "$ref" : "#/components/schemas/inline_response_200_6_line"
+      "$ref" : "#/components/schemas/inline_response_200_8_line"
     }
   }
 };
@@ -1077,7 +1135,11 @@
     },
     "validFor" : {
       "type" : "integer",
-      "description" : "Interval of ticket validity in days (can be null)"
+      "description" : "Interval of ticket validity (can be null)"
+    },
+    "validTimeUnit" : {
+      "type" : "string",
+      "description" : "Time unit of ticket validity, can be \"hour\" or \"day\""
     },
     "price" : {
       "type" : "integer",
@@ -1183,6 +1245,9 @@
                     </li>
                     <li data-group="Ticket" data-name="getTicket" class="">
                       <a href="#api-Ticket-getTicket">getTicket</a>
+                    </li>
+                    <li data-group="Ticket" data-name="getTicketExpiry" class="">
+                      <a href="#api-Ticket-getTicketExpiry">getTicketExpiry</a>
                     </li>
                     <li data-group="Ticket" data-name="getTickets" class="">
                       <a href="#api-Ticket-getTickets">getTickets</a>
@@ -4016,6 +4081,344 @@ except ApiException as e:
                         </article>
                       </div>
                       <hr>
+                    <div id="api-Ticket-getTicketExpiry">
+                      <article id="api-Ticket-getTicketExpiry-0" data-group="User" data-name="getTicketExpiry" data-version="0">
+                        <div class="pull-left">
+                          <h1>getTicketExpiry</h1>
+                          <p>Get expiry for specific ticket type</p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked"></p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/ticket/{ticketId}/expiry</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-Ticket-getTicketExpiry-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-Ticket-getTicketExpiry-0-java">Java</a></li>
+                          <li class=""><a href="#examples-Ticket-getTicketExpiry-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-Ticket-getTicketExpiry-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-Ticket-getTicketExpiry-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-Ticket-getTicketExpiry-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-Ticket-getTicketExpiry-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-Ticket-getTicketExpiry-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-Ticket-getTicketExpiry-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-Ticket-getTicketExpiry-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-Ticket-getTicketExpiry-0-python">Python</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-Ticket-getTicketExpiry-0-curl">
+                            <pre class="prettyprint"><code class="language-bsh">curl -X GET "https://temalabor2019.azurewebsites.net/api//ticket/{ticketId}/expiry?start="</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-Ticket-getTicketExpiry-0-java">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
+import io.swagger.client.auth.*;
+import io.swagger.client.model.*;
+import io.swagger.client.api.TicketApi;
+
+import java.io.File;
+import java.util.*;
+
+public class TicketApiExample {
+
+    public static void main(String[] args) {
+        
+        TicketApi apiInstance = new TicketApi();
+        String ticketId = ticketId_example; // String | ID of ticket to return expiry for
+        String start = start_example; // String | Start datetime to calculate ticket expiry from, if not given, expiry will be calculated from now, ISO 8601 format
+        try {
+            inline_response_200_3 result = apiInstance.getTicketExpiry(ticketId, start);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling TicketApi#getTicketExpiry");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-Ticket-getTicketExpiry-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.TicketApi;
+
+public class TicketApiExample {
+
+    public static void main(String[] args) {
+        TicketApi apiInstance = new TicketApi();
+        String ticketId = ticketId_example; // String | ID of ticket to return expiry for
+        String start = start_example; // String | Start datetime to calculate ticket expiry from, if not given, expiry will be calculated from now, ISO 8601 format
+        try {
+            inline_response_200_3 result = apiInstance.getTicketExpiry(ticketId, start);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling TicketApi#getTicketExpiry");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-Ticket-getTicketExpiry-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-Ticket-getTicketExpiry-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">String *ticketId = ticketId_example; // ID of ticket to return expiry for
+String *start = start_example; // Start datetime to calculate ticket expiry from, if not given, expiry will be calculated from now, ISO 8601 format (optional)
+
+TicketApi *apiInstance = [[TicketApi alloc] init];
+
+// Get expiry for specific ticket type
+[apiInstance getTicketExpiryWith:ticketId
+    start:start
+              completionHandler: ^(inline_response_200_3 output, NSError* error) {
+                            if (output) {
+                                NSLog(@"%@", output);
+                            }
+                            if (error) {
+                                NSLog(@"Error: %@", error);
+                            }
+                        }];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Ticket-getTicketExpiry-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var PublicTransport = require('public_transport');
+
+var api = new PublicTransport.TicketApi()
+var ticketId = ticketId_example; // {{String}} ID of ticket to return expiry for
+var opts = { 
+  'start': start_example // {{String}} Start datetime to calculate ticket expiry from, if not given, expiry will be calculated from now, ISO 8601 format
+};
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+api.getTicketExpiry(ticketId, opts, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-Ticket-getTicketExpiry-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-Ticket-getTicketExpiry-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using IO.Swagger.Api;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
+
+namespace Example
+{
+    public class getTicketExpiryExample
+    {
+        public void main()
+        {
+
+            var apiInstance = new TicketApi();
+            var ticketId = ticketId_example;  // String | ID of ticket to return expiry for
+            var start = start_example;  // String | Start datetime to calculate ticket expiry from, if not given, expiry will be calculated from now, ISO 8601 format (optional) 
+
+            try
+            {
+                // Get expiry for specific ticket type
+                inline_response_200_3 result = apiInstance.getTicketExpiry(ticketId, start);
+                Debug.WriteLine(result);
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Exception when calling TicketApi.getTicketExpiry: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Ticket-getTicketExpiry-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+$api_instance = new Swagger\Client\ApiTicketApi();
+$ticketId = ticketId_example; // String | ID of ticket to return expiry for
+$start = start_example; // String | Start datetime to calculate ticket expiry from, if not given, expiry will be calculated from now, ISO 8601 format
+
+try {
+    $result = $api_instance->getTicketExpiry($ticketId, $start);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling TicketApi->getTicketExpiry: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Ticket-getTicketExpiry-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::SwaggerClient::Configuration;
+use WWW::SwaggerClient::TicketApi;
+
+my $api_instance = WWW::SwaggerClient::TicketApi->new();
+my $ticketId = ticketId_example; # String | ID of ticket to return expiry for
+my $start = start_example; # String | Start datetime to calculate ticket expiry from, if not given, expiry will be calculated from now, ISO 8601 format
+
+eval { 
+    my $result = $api_instance->getTicketExpiry(ticketId => $ticketId, start => $start);
+    print Dumper($result);
+};
+if ($@) {
+    warn "Exception when calling TicketApi->getTicketExpiry: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-Ticket-getTicketExpiry-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+# create an instance of the API class
+api_instance = swagger_client.TicketApi()
+ticketId = ticketId_example # String | ID of ticket to return expiry for
+start = start_example # String | Start datetime to calculate ticket expiry from, if not given, expiry will be calculated from now, ISO 8601 format (optional)
+
+try: 
+    # Get expiry for specific ticket type
+    api_response = api_instance.get_ticket_expiry(ticketId, start=start)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling TicketApi->getTicketExpiry: %s\n" % e)</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Parameters</h2>
+
+                            <div class="methodsubtabletitle">Path parameters</div>
+                            <table id="methodsubtable">
+                                <tr>
+                                  <th width="150px">Name</th>
+                                  <th>Description</th>
+                                </tr>
+                                  <tr><td style="width:150px;">ticketId*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_getTicketExpiry_ticketId">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      String
+                                                  </span>
+                                  
+                                                      <div class="inner description">
+                                                          ID of ticket to return expiry for
+                                                      </div>
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                            </table>
+
+
+
+
+                            <div class="methodsubtabletitle">Query parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                                <tr><td style="width:150px;">start</td>
+                                <td>
+                                
+                                
+                                    <div id="d2e199_getTicketExpiry_start">
+                                        <div class="json-schema-view">
+                                            <div class="primitive">
+                                                <span class="type">
+                                                    String
+                                                </span>
+                                
+                                                    <div class="inner description">
+                                                        Start datetime to calculate ticket expiry from, if not given, expiry will be calculated from now, ISO 8601 format
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                </tr>
+                            </table>
+
+                          <h2>Responses</h2>
+                            <h3> Status: 200 - Ticket expiry </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-getTicketExpiry-200-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-getTicketExpiry-200-schema">
+                                  <div id='responses-getTicketExpiry-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Ticket expiry",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/inline_response_200_3"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-getTicketExpiry-200-schema-data').val(stringify(schema));
+                                        var result = $('#responses-getTicketExpiry-200-schema-200');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-getTicketExpiry-200-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                            <h3> Status: 404 - Ticket type not found </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                        </article>
+                      </div>
+                      <hr>
                     <div id="api-Ticket-getTickets">
                       <article id="api-Ticket-getTickets-0" data-group="User" data-name="getTickets" data-version="0">
                         <div class="pull-left">
@@ -4065,7 +4468,7 @@ public class TicketApiExample {
         
         TicketApi apiInstance = new TicketApi();
         try {
-            array[inline_response_200_2] result = apiInstance.getTickets();
+            array[inline_response_200_4] result = apiInstance.getTickets();
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling TicketApi#getTickets");
@@ -4083,7 +4486,7 @@ public class TicketApiExample {
     public static void main(String[] args) {
         TicketApi apiInstance = new TicketApi();
         try {
-            array[inline_response_200_2] result = apiInstance.getTickets();
+            array[inline_response_200_4] result = apiInstance.getTickets();
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling TicketApi#getTickets");
@@ -4102,7 +4505,7 @@ TicketApi *apiInstance = [[TicketApi alloc] init];
 
 // Get data for available tickets
 [apiInstance getTicketsWithCompletionHandler: 
-              ^(array[inline_response_200_2] output, NSError* error) {
+              ^(array[inline_response_200_4] output, NSError* error) {
                             if (output) {
                                 NSLog(@"%@", output);
                             }
@@ -4150,7 +4553,7 @@ namespace Example
             try
             {
                 // Get data for available tickets
-                array[inline_response_200_2] result = apiInstance.getTickets();
+                array[inline_response_200_4] result = apiInstance.getTickets();
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -4242,7 +4645,7 @@ except ApiException as e:
       "schema" : {
         "type" : "array",
         "items" : {
-          "$ref" : "#/components/schemas/inline_response_200_2"
+          "$ref" : "#/components/schemas/inline_response_200_4"
         },
         "x-content-type" : "application/json"
       }
@@ -4333,7 +4736,7 @@ public class TicketApiExample {
         TicketApi apiInstance = new TicketApi();
         Body_8 body = ; // Body_8 | Ticket ID to be inspected
         try {
-            inline_response_200_3 result = apiInstance.inspectTicket(body);
+            inline_response_200_5 result = apiInstance.inspectTicket(body);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling TicketApi#inspectTicket");
@@ -4352,7 +4755,7 @@ public class TicketApiExample {
         TicketApi apiInstance = new TicketApi();
         Body_8 body = ; // Body_8 | Ticket ID to be inspected
         try {
-            inline_response_200_3 result = apiInstance.inspectTicket(body);
+            inline_response_200_5 result = apiInstance.inspectTicket(body);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling TicketApi#inspectTicket");
@@ -4377,7 +4780,7 @@ TicketApi *apiInstance = [[TicketApi alloc] init];
 
 // Inspect a ticket
 [apiInstance inspectTicketWith:body
-              completionHandler: ^(inline_response_200_3 output, NSError* error) {
+              completionHandler: ^(inline_response_200_5 output, NSError* error) {
                             if (output) {
                                 NSLog(@"%@", output);
                             }
@@ -4439,7 +4842,7 @@ namespace Example
             try
             {
                 // Inspect a ticket
-                inline_response_200_3 result = apiInstance.inspectTicket(body);
+                inline_response_200_5 result = apiInstance.inspectTicket(body);
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -4590,7 +4993,7 @@ except ApiException as e:
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/inline_response_200_3"
+        "$ref" : "#/components/schemas/inline_response_200_5"
       }
     }
   }
@@ -5954,7 +6357,7 @@ public class TransportLineApiExample {
         TransportLineApi apiInstance = new TransportLineApi();
         String lineId = lineId_example; // String | Line ID of transport line to return
         try {
-            inline_response_200_4 result = apiInstance.getLine(lineId);
+            inline_response_200_6 result = apiInstance.getLine(lineId);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling TransportLineApi#getLine");
@@ -5973,7 +6376,7 @@ public class TransportLineApiExample {
         TransportLineApi apiInstance = new TransportLineApi();
         String lineId = lineId_example; // String | Line ID of transport line to return
         try {
-            inline_response_200_4 result = apiInstance.getLine(lineId);
+            inline_response_200_6 result = apiInstance.getLine(lineId);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling TransportLineApi#getLine");
@@ -5993,7 +6396,7 @@ TransportLineApi *apiInstance = [[TransportLineApi alloc] init];
 
 // Get data for specific transport line
 [apiInstance getLineWith:lineId
-              completionHandler: ^(inline_response_200_4 output, NSError* error) {
+              completionHandler: ^(inline_response_200_6 output, NSError* error) {
                             if (output) {
                                 NSLog(@"%@", output);
                             }
@@ -6044,7 +6447,7 @@ namespace Example
             try
             {
                 // Get data for specific transport line
-                inline_response_200_4 result = apiInstance.getLine(lineId);
+                inline_response_200_6 result = apiInstance.getLine(lineId);
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -6166,7 +6569,7 @@ except ApiException as e:
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/inline_response_200_4"
+        "$ref" : "#/components/schemas/inline_response_200_6"
       }
     }
   }
@@ -6255,7 +6658,7 @@ public class TransportLineApiExample {
         
         TransportLineApi apiInstance = new TransportLineApi();
         try {
-            array[inline_response_200_5] result = apiInstance.getTransportLines();
+            array[inline_response_200_7] result = apiInstance.getTransportLines();
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling TransportLineApi#getTransportLines");
@@ -6273,7 +6676,7 @@ public class TransportLineApiExample {
     public static void main(String[] args) {
         TransportLineApi apiInstance = new TransportLineApi();
         try {
-            array[inline_response_200_5] result = apiInstance.getTransportLines();
+            array[inline_response_200_7] result = apiInstance.getTransportLines();
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling TransportLineApi#getTransportLines");
@@ -6292,7 +6695,7 @@ TransportLineApi *apiInstance = [[TransportLineApi alloc] init];
 
 // Get data for all transport lines
 [apiInstance getTransportLinesWithCompletionHandler: 
-              ^(array[inline_response_200_5] output, NSError* error) {
+              ^(array[inline_response_200_7] output, NSError* error) {
                             if (output) {
                                 NSLog(@"%@", output);
                             }
@@ -6340,7 +6743,7 @@ namespace Example
             try
             {
                 // Get data for all transport lines
-                array[inline_response_200_5] result = apiInstance.getTransportLines();
+                array[inline_response_200_7] result = apiInstance.getTransportLines();
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -6432,7 +6835,7 @@ except ApiException as e:
       "schema" : {
         "type" : "array",
         "items" : {
-          "$ref" : "#/components/schemas/inline_response_200_5"
+          "$ref" : "#/components/schemas/inline_response_200_7"
         },
         "x-content-type" : "application/json"
       }
@@ -9348,7 +9751,7 @@ public class VehicleApiExample {
         VehicleApi apiInstance = new VehicleApi();
         String vehicleId = vehicleId_example; // String | ID of vehicle to return
         try {
-            inline_response_200_6 result = apiInstance.getVehicle(vehicleId);
+            inline_response_200_8 result = apiInstance.getVehicle(vehicleId);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling VehicleApi#getVehicle");
@@ -9367,7 +9770,7 @@ public class VehicleApiExample {
         VehicleApi apiInstance = new VehicleApi();
         String vehicleId = vehicleId_example; // String | ID of vehicle to return
         try {
-            inline_response_200_6 result = apiInstance.getVehicle(vehicleId);
+            inline_response_200_8 result = apiInstance.getVehicle(vehicleId);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling VehicleApi#getVehicle");
@@ -9387,7 +9790,7 @@ VehicleApi *apiInstance = [[VehicleApi alloc] init];
 
 // Get data for specific vehicle
 [apiInstance getVehicleWith:vehicleId
-              completionHandler: ^(inline_response_200_6 output, NSError* error) {
+              completionHandler: ^(inline_response_200_8 output, NSError* error) {
                             if (output) {
                                 NSLog(@"%@", output);
                             }
@@ -9438,7 +9841,7 @@ namespace Example
             try
             {
                 // Get data for specific vehicle
-                inline_response_200_6 result = apiInstance.getVehicle(vehicleId);
+                inline_response_200_8 result = apiInstance.getVehicle(vehicleId);
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -9560,7 +9963,7 @@ except ApiException as e:
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/inline_response_200_6"
+        "$ref" : "#/components/schemas/inline_response_200_8"
       }
     }
   }
@@ -9649,7 +10052,7 @@ public class VehicleApiExample {
         
         VehicleApi apiInstance = new VehicleApi();
         try {
-            array[inline_response_200_7] result = apiInstance.getVehicles();
+            array[inline_response_200_9] result = apiInstance.getVehicles();
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling VehicleApi#getVehicles");
@@ -9667,7 +10070,7 @@ public class VehicleApiExample {
     public static void main(String[] args) {
         VehicleApi apiInstance = new VehicleApi();
         try {
-            array[inline_response_200_7] result = apiInstance.getVehicles();
+            array[inline_response_200_9] result = apiInstance.getVehicles();
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling VehicleApi#getVehicles");
@@ -9686,7 +10089,7 @@ VehicleApi *apiInstance = [[VehicleApi alloc] init];
 
 // Get data for all transport vehicles
 [apiInstance getVehiclesWithCompletionHandler: 
-              ^(array[inline_response_200_7] output, NSError* error) {
+              ^(array[inline_response_200_9] output, NSError* error) {
                             if (output) {
                                 NSLog(@"%@", output);
                             }
@@ -9734,7 +10137,7 @@ namespace Example
             try
             {
                 // Get data for all transport vehicles
-                array[inline_response_200_7] result = apiInstance.getVehicles();
+                array[inline_response_200_9] result = apiInstance.getVehicles();
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -9826,7 +10229,7 @@ except ApiException as e:
       "schema" : {
         "type" : "array",
         "items" : {
-          "$ref" : "#/components/schemas/inline_response_200_7"
+          "$ref" : "#/components/schemas/inline_response_200_9"
         },
         "x-content-type" : "application/json"
       }

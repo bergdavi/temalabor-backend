@@ -8,9 +8,8 @@ module.exports = function () {
                 typeId: ticket.typeId,
                 type: ticket.type,
                 validFor: ticket.validFor,
+                validTimeUnit: ticket.validTimeUnit,
                 price: ticket.price,
-                // TODO decide which to use
-                //line: ticket.line ? ticket.line : '*'
                 line: ticket.Line ? {
                     id: ticket.Line.id,
                     name: ticket.Line.name,

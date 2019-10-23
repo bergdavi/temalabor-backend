@@ -321,7 +321,10 @@ paths:
                   type: string
                 validFor:
                   type: integer
-                  description: 'Validity of ticket in days, if not given ticket is valid for a single line'
+                  description: 'Validity of ticket, if not given ticket is valid for a single line'
+                validTimeUnit:
+                  type: string
+                  description: 'Time unit of ticket validity, can be "hour" or "day", required if validFor is given'
                 price:
                   type: integer
                   description: Price of ticket in HUF
@@ -370,6 +373,9 @@ paths:
                   validFor:
                     type: integer
                     description: 'Validiity of tickets in days, null if valid for single travel'
+                  validTimeUnit:
+                    type: string
+                    description: 'Time unit of ticket validity, can be "hour" or "day"'
                   line:
                     type: object
                     description: 'Line the ticket is valid on, null if valid on all lines'
@@ -409,6 +415,10 @@ paths:
                   type: string
                 validFor:
                   type: integer
+                  description: 'Validity of ticket, can be null'
+                validTimeUnit:
+                  type: string
+                  description: 'Time unit of ticket validity, can be "hour" or "day"'
                 line:
                   type: string
                 price:
@@ -444,6 +454,45 @@ paths:
           content: {}
       security:
         - cookieAuth: []
+  '/ticket/{ticketId}/expiry':
+    get:
+      tags:
+        - ticket
+      summary: Get expiry for specific ticket type
+      operationId: getTicketExpiry
+      parameters:
+        - name: ticketId
+          in: path
+          description: ID of ticket to return expiry for
+          required: true
+          schema:
+            type: string
+        - name: start
+          in: query
+          description: 'Start datetime to calculate ticket expiry from, if not given, expiry will be calculated from now, ISO 8601 format'
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ticket expiry
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  typeId:
+                    type: string
+                    description: Ticket type id
+                  startDate:
+                    type: string
+                    description: 'Start datetime of ticket validity, ISO 8601 format'
+                  expiryDate:
+                    type: string
+                    description: 'End datetime of ticket validity, ISO 8601 format'
+        '404':
+          description: Ticket type not found
+          content: {}
   /tickets:
     get:
       tags:
@@ -468,7 +517,10 @@ paths:
                       description: Type ID
                     validFor:
                       type: integer
-                      description: 'Validiity of tickets in days, null if valid for single travel'
+                      description: 'Validiity of tickets, null if valid for single travel'
+                    validTimeUnit:
+                      type: string
+                      description: 'Time unit of ticket validity, can be "hour" or "day"'
                     line:
                       type: object
                       description: 'Line the ticket is valid on, null if valid on all lines'
@@ -928,7 +980,10 @@ components:
           description: User friendly name of ticket type
         validFor:
           type: integer
-          description: Interval of ticket validity in days (can be null)
+          description: 'Interval of ticket validity (can be null)'
+        validTimeUnit:
+          type: string
+          description: 'Time unit of ticket validity, can be "hour" or "day"'
         price:
           type: integer
           description: 'Price of ticket in HUF'
