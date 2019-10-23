@@ -724,13 +724,11 @@
             defs.body_10 = {
   "type" : "object",
   "properties" : {
-    "licencePlate" : {
-      "type" : "string",
-      "description" : "Licence plate, must be unique"
+    "name" : {
+      "type" : "string"
     },
-    "lineId" : {
-      "type" : "string",
-      "description" : "Transport line id"
+    "type" : {
+      "type" : "integer"
     }
   }
 };
@@ -738,14 +736,38 @@
   "type" : "object",
   "properties" : {
     "licencePlate" : {
+      "type" : "string",
+      "description" : "Licence plate, must be unique"
+    },
+    "line" : {
+      "type" : "string",
+      "description" : "Transport line id"
+    }
+  }
+};
+            defs.body_12 = {
+  "type" : "object",
+  "properties" : {
+    "licencePlate" : {
       "type" : "string"
     },
     "line" : {
-      "type" : "integer"
+      "type" : "string"
     }
   }
 };
             defs.body_2 = {
+  "type" : "object",
+  "properties" : {
+    "oldPassword" : {
+      "type" : "string"
+    },
+    "newPassword" : {
+      "type" : "string"
+    }
+  }
+};
+            defs.body_3 = {
   "type" : "object",
   "properties" : {
     "name" : {
@@ -756,7 +778,7 @@
     }
   }
 };
-            defs.body_3 = {
+            defs.body_4 = {
   "type" : "object",
   "properties" : {
     "type" : {
@@ -776,7 +798,7 @@
     }
   }
 };
-            defs.body_4 = {
+            defs.body_5 = {
   "type" : "object",
   "properties" : {
     "type" : {
@@ -793,7 +815,7 @@
     }
   }
 };
-            defs.body_5 = {
+            defs.body_6 = {
   "type" : "object",
   "properties" : {
     "typeId" : {
@@ -803,15 +825,6 @@
     "fromDate" : {
       "type" : "string",
       "description" : "Date for the ticket to be valid from, only required for passes"
-    }
-  }
-};
-            defs.body_6 = {
-  "type" : "object",
-  "properties" : {
-    "id" : {
-      "type" : "string",
-      "description" : "Ticket ID"
     }
   }
 };
@@ -827,24 +840,22 @@
             defs.body_8 = {
   "type" : "object",
   "properties" : {
-    "number" : {
+    "id" : {
       "type" : "string",
-      "description" : "Line number, must be unique"
-    },
-    "type" : {
-      "type" : "string",
-      "description" : "Transport type, e.g bus, tram..."
+      "description" : "Ticket ID"
     }
   }
 };
             defs.body_9 = {
   "type" : "object",
   "properties" : {
-    "number" : {
-      "type" : "string"
+    "name" : {
+      "type" : "string",
+      "description" : "Line number, must be unique"
     },
     "type" : {
-      "type" : "integer"
+      "type" : "string",
+      "description" : "Transport type, e.g bus, tram..."
     }
   }
 };
@@ -959,7 +970,7 @@
             defs.inline_response_200_4 = {
   "type" : "object",
   "properties" : {
-    "number" : {
+    "name" : {
       "type" : "string",
       "description" : "Line number"
     },
@@ -976,7 +987,7 @@
             defs.inline_response_200_5 = {
   "type" : "object",
   "properties" : {
-    "number" : {
+    "name" : {
       "type" : "string",
       "description" : "Line number"
     },
@@ -998,12 +1009,41 @@
       "description" : "Licence plate"
     },
     "line" : {
-      "type" : "string",
-      "description" : "Transport line"
+      "$ref" : "#/components/schemas/inline_response_200_6_line"
     },
     "id" : {
       "type" : "string",
       "description" : "Vehcile ID"
+    }
+  }
+};
+            defs.inline_response_200_6_line = {
+  "type" : "object",
+  "properties" : {
+    "id" : {
+      "type" : "string"
+    },
+    "name" : {
+      "type" : "string"
+    },
+    "type" : {
+      "type" : "string"
+    }
+  },
+  "description" : "Line the vehicle belongs to, can be null"
+};
+            defs.inline_response_200_7 = {
+  "type" : "object",
+  "properties" : {
+    "type" : {
+      "type" : "string",
+      "description" : "Type of vehicle e.g. bus, tram, etc."
+    },
+    "licencePlate" : {
+      "type" : "string"
+    },
+    "line" : {
+      "$ref" : "#/components/schemas/inline_response_200_6_line"
     }
   }
 };
@@ -1038,6 +1078,10 @@
     "validFor" : {
       "type" : "integer",
       "description" : "Interval of ticket validity in days (can be null)"
+    },
+    "price" : {
+      "type" : "integer",
+      "description" : "Price of ticket in HUF"
     },
     "line" : {
       "$ref" : "#/components/schemas/Line"
@@ -1276,8 +1320,9 @@ public class AuthApiExample {
         //cookieAuth.setApiKeyPrefix("Token");
 
         AuthApi apiInstance = new AuthApi();
+        Body_2 body = ; // Body_2 | Old password, and new password
         try {
-            apiInstance.changePassword();
+            apiInstance.changePassword(body);
         } catch (ApiException e) {
             System.err.println("Exception when calling AuthApi#changePassword");
             e.printStackTrace();
@@ -1293,8 +1338,9 @@ public class AuthApiExample {
 
     public static void main(String[] args) {
         AuthApi apiInstance = new AuthApi();
+        Body_2 body = ; // Body_2 | Old password, and new password
         try {
-            apiInstance.changePassword();
+            apiInstance.changePassword(body);
         } catch (ApiException e) {
             System.err.println("Exception when calling AuthApi#changePassword");
             e.printStackTrace();
@@ -1312,12 +1358,13 @@ public class AuthApiExample {
 [apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"session_id"];
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"session_id"];
+Body_2 *body = ; // Old password, and new password
 
 AuthApi *apiInstance = [[AuthApi alloc] init];
 
 // Change password for logged in user
-[apiInstance changePasswordWithCompletionHandler: 
-              ^(NSError* error) {
+[apiInstance changePasswordWith:body
+              completionHandler: ^(NSError* error) {
                             if (error) {
                                 NSLog(@"Error: %@", error);
                             }
@@ -1336,6 +1383,8 @@ cookieAuth.apiKey = "YOUR API KEY"
 //cookieAuth.apiKeyPrefix['session_id'] = "Token"
 
 var api = new PublicTransport.AuthApi()
+var body = ; // {{Body_2}} Old password, and new password
+
 var callback = function(error, data, response) {
   if (error) {
     console.error(error);
@@ -1343,7 +1392,7 @@ var callback = function(error, data, response) {
     console.log('API called successfully.');
   }
 };
-api.changePassword(callback);
+api.changePassword(body, callback);
 </code></pre>
                             </div>
 
@@ -1370,11 +1419,12 @@ namespace Example
             // Configuration.Default.ApiKeyPrefix.Add("session_id", "Bearer");
 
             var apiInstance = new AuthApi();
+            var body = new Body_2(); // Body_2 | Old password, and new password
 
             try
             {
                 // Change password for logged in user
-                apiInstance.changePassword();
+                apiInstance.changePassword(body);
             }
             catch (Exception e)
             {
@@ -1396,9 +1446,10 @@ Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('session_id',
 // Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('session_id', 'Bearer');
 
 $api_instance = new Swagger\Client\ApiAuthApi();
+$body = ; // Body_2 | Old password, and new password
 
 try {
-    $api_instance->changePassword();
+    $api_instance->changePassword($body);
 } catch (Exception $e) {
     echo 'Exception when calling AuthApi->changePassword: ', $e->getMessage(), PHP_EOL;
 }
@@ -1416,9 +1467,10 @@ $WWW::SwaggerClient::Configuration::api_key->{'session_id'} = 'YOUR_API_KEY';
 #$WWW::SwaggerClient::Configuration::api_key_prefix->{'session_id'} = "Bearer";
 
 my $api_instance = WWW::SwaggerClient::AuthApi->new();
+my $body = WWW::SwaggerClient::Object::Body_2->new(); # Body_2 | Old password, and new password
 
 eval { 
-    $api_instance->changePassword();
+    $api_instance->changePassword(body => $body);
 };
 if ($@) {
     warn "Exception when calling AuthApi->changePassword: $@\n";
@@ -1439,10 +1491,11 @@ swagger_client.configuration.api_key['session_id'] = 'YOUR_API_KEY'
 
 # create an instance of the API class
 api_instance = swagger_client.AuthApi()
+body =  # Body_2 | Old password, and new password
 
 try: 
     # Change password for logged in user
-    api_instance.change_password()
+    api_instance.change_password(body)
 except ApiException as e:
     print("Exception when calling AuthApi->changePassword: %s\n" % e)</code></pre>
                             </div>
@@ -1452,6 +1505,50 @@ except ApiException as e:
 
 
 
+                            <div class="methodsubtabletitle">Body parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                                <tr><td style="width:150px;">body <span style="color:red;">*</span></td>
+                                <td>
+                                
+                                
+                                <script>
+                                $(document).ready(function() {
+                                  var schemaWrapper = {
+  "description" : "Old password, and new password",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/body_2"
+      }
+    }
+  },
+  "required" : true
+};
+                                  var schema = schemaWrapper.content["application/json"].schema;
+                                  if (schema.$ref != null) {
+                                    schema = defsParser.$refs.get(schema.$ref);
+                                  } else {
+                                    schemaWrapper.components = {};
+                                    schemaWrapper.components.schemas = Object.assign({}, defs);
+                                    $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                      console.log(err);
+                                    });
+                                  }
+                                
+                                  var view = new JSONSchemaView(schema,2,{isBodyParam: true});
+                                  var result = $('#d2e199_changePassword_body');
+                                  result.empty();
+                                  result.append(view.render());
+                                });
+                                </script>
+                                <div id="d2e199_changePassword_body"></div>
+                                </td>
+                                </tr>
+                            </table>
 
 
 
@@ -2409,7 +2506,7 @@ public class TicketApiExample {
         //cookieAuth.setApiKeyPrefix("Token");
 
         TicketApi apiInstance = new TicketApi();
-        Body_3 body = ; // Body_3 | Ticket details to add
+        Body_4 body = ; // Body_4 | Ticket details to add
         try {
             apiInstance.addTicketType(body);
         } catch (ApiException e) {
@@ -2427,7 +2524,7 @@ public class TicketApiExample {
 
     public static void main(String[] args) {
         TicketApi apiInstance = new TicketApi();
-        Body_3 body = ; // Body_3 | Ticket details to add
+        Body_4 body = ; // Body_4 | Ticket details to add
         try {
             apiInstance.addTicketType(body);
         } catch (ApiException e) {
@@ -2447,7 +2544,7 @@ public class TicketApiExample {
 [apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"session_id"];
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"session_id"];
-Body_3 *body = ; // Ticket details to add (optional)
+Body_4 *body = ; // Ticket details to add (optional)
 
 TicketApi *apiInstance = [[TicketApi alloc] init];
 
@@ -2507,7 +2604,7 @@ namespace Example
             // Configuration.Default.ApiKeyPrefix.Add("session_id", "Bearer");
 
             var apiInstance = new TicketApi();
-            var body = new Body_3(); // Body_3 | Ticket details to add (optional) 
+            var body = new Body_4(); // Body_4 | Ticket details to add (optional) 
 
             try
             {
@@ -2534,7 +2631,7 @@ Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('session_id',
 // Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('session_id', 'Bearer');
 
 $api_instance = new Swagger\Client\ApiTicketApi();
-$body = ; // Body_3 | Ticket details to add
+$body = ; // Body_4 | Ticket details to add
 
 try {
     $api_instance->addTicketType($body);
@@ -2555,7 +2652,7 @@ $WWW::SwaggerClient::Configuration::api_key->{'session_id'} = 'YOUR_API_KEY';
 #$WWW::SwaggerClient::Configuration::api_key_prefix->{'session_id'} = "Bearer";
 
 my $api_instance = WWW::SwaggerClient::TicketApi->new();
-my $body = WWW::SwaggerClient::Object::Body_3->new(); # Body_3 | Ticket details to add
+my $body = WWW::SwaggerClient::Object::Body_4->new(); # Body_4 | Ticket details to add
 
 eval { 
     $api_instance->addTicketType(body => $body);
@@ -2579,7 +2676,7 @@ swagger_client.configuration.api_key['session_id'] = 'YOUR_API_KEY'
 
 # create an instance of the API class
 api_instance = swagger_client.TicketApi()
-body =  # Body_3 | Ticket details to add (optional)
+body =  # Body_4 | Ticket details to add (optional)
 
 try: 
     # Add a new ticket type to the system
@@ -2610,7 +2707,7 @@ except ApiException as e:
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/body_3"
+        "$ref" : "#/components/schemas/body_4"
       }
     }
   }
@@ -2722,7 +2819,7 @@ public class TicketApiExample {
         //cookieAuth.setApiKeyPrefix("Token");
 
         TicketApi apiInstance = new TicketApi();
-        Body_5 body = ; // Body_5 | Ticket details to buy
+        Body_6 body = ; // Body_6 | Ticket details to buy
         try {
             apiInstance.buyTicket(body);
         } catch (ApiException e) {
@@ -2740,7 +2837,7 @@ public class TicketApiExample {
 
     public static void main(String[] args) {
         TicketApi apiInstance = new TicketApi();
-        Body_5 body = ; // Body_5 | Ticket details to buy
+        Body_6 body = ; // Body_6 | Ticket details to buy
         try {
             apiInstance.buyTicket(body);
         } catch (ApiException e) {
@@ -2760,7 +2857,7 @@ public class TicketApiExample {
 [apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"session_id"];
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"session_id"];
-Body_5 *body = ; // Ticket details to buy (optional)
+Body_6 *body = ; // Ticket details to buy (optional)
 
 TicketApi *apiInstance = [[TicketApi alloc] init];
 
@@ -2820,7 +2917,7 @@ namespace Example
             // Configuration.Default.ApiKeyPrefix.Add("session_id", "Bearer");
 
             var apiInstance = new TicketApi();
-            var body = new Body_5(); // Body_5 | Ticket details to buy (optional) 
+            var body = new Body_6(); // Body_6 | Ticket details to buy (optional) 
 
             try
             {
@@ -2847,7 +2944,7 @@ Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('session_id',
 // Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('session_id', 'Bearer');
 
 $api_instance = new Swagger\Client\ApiTicketApi();
-$body = ; // Body_5 | Ticket details to buy
+$body = ; // Body_6 | Ticket details to buy
 
 try {
     $api_instance->buyTicket($body);
@@ -2868,7 +2965,7 @@ $WWW::SwaggerClient::Configuration::api_key->{'session_id'} = 'YOUR_API_KEY';
 #$WWW::SwaggerClient::Configuration::api_key_prefix->{'session_id'} = "Bearer";
 
 my $api_instance = WWW::SwaggerClient::TicketApi->new();
-my $body = WWW::SwaggerClient::Object::Body_5->new(); # Body_5 | Ticket details to buy
+my $body = WWW::SwaggerClient::Object::Body_6->new(); # Body_6 | Ticket details to buy
 
 eval { 
     $api_instance->buyTicket(body => $body);
@@ -2892,7 +2989,7 @@ swagger_client.configuration.api_key['session_id'] = 'YOUR_API_KEY'
 
 # create an instance of the API class
 api_instance = swagger_client.TicketApi()
-body =  # Body_5 | Ticket details to buy (optional)
+body =  # Body_6 | Ticket details to buy (optional)
 
 try: 
     # Buy type of ticket
@@ -2923,7 +3020,7 @@ except ApiException as e:
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/body_5"
+        "$ref" : "#/components/schemas/body_6"
       }
     }
   }
@@ -3035,7 +3132,7 @@ public class TicketApiExample {
         //cookieAuth.setApiKeyPrefix("Token");
 
         TicketApi apiInstance = new TicketApi();
-        Body_4 body = ; // Body_4 | Ticket object to be updated
+        Body_5 body = ; // Body_5 | Ticket object to be updated
         String ticketId = ticketId_example; // String | ID of ticket to be changed, must be admin
         try {
             apiInstance.changeTicketData(body, ticketId);
@@ -3054,7 +3151,7 @@ public class TicketApiExample {
 
     public static void main(String[] args) {
         TicketApi apiInstance = new TicketApi();
-        Body_4 body = ; // Body_4 | Ticket object to be updated
+        Body_5 body = ; // Body_5 | Ticket object to be updated
         String ticketId = ticketId_example; // String | ID of ticket to be changed, must be admin
         try {
             apiInstance.changeTicketData(body, ticketId);
@@ -3075,7 +3172,7 @@ public class TicketApiExample {
 [apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"session_id"];
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"session_id"];
-Body_4 *body = ; // Ticket object to be updated
+Body_5 *body = ; // Ticket object to be updated
 String *ticketId = ticketId_example; // ID of ticket to be changed, must be admin
 
 TicketApi *apiInstance = [[TicketApi alloc] init];
@@ -3102,7 +3199,7 @@ cookieAuth.apiKey = "YOUR API KEY"
 //cookieAuth.apiKeyPrefix['session_id'] = "Token"
 
 var api = new PublicTransport.TicketApi()
-var body = ; // {{Body_4}} Ticket object to be updated
+var body = ; // {{Body_5}} Ticket object to be updated
 var ticketId = ticketId_example; // {{String}} ID of ticket to be changed, must be admin
 
 var callback = function(error, data, response) {
@@ -3139,7 +3236,7 @@ namespace Example
             // Configuration.Default.ApiKeyPrefix.Add("session_id", "Bearer");
 
             var apiInstance = new TicketApi();
-            var body = new Body_4(); // Body_4 | Ticket object to be updated
+            var body = new Body_5(); // Body_5 | Ticket object to be updated
             var ticketId = ticketId_example;  // String | ID of ticket to be changed, must be admin
 
             try
@@ -3167,7 +3264,7 @@ Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('session_id',
 // Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('session_id', 'Bearer');
 
 $api_instance = new Swagger\Client\ApiTicketApi();
-$body = ; // Body_4 | Ticket object to be updated
+$body = ; // Body_5 | Ticket object to be updated
 $ticketId = ticketId_example; // String | ID of ticket to be changed, must be admin
 
 try {
@@ -3189,7 +3286,7 @@ $WWW::SwaggerClient::Configuration::api_key->{'session_id'} = 'YOUR_API_KEY';
 #$WWW::SwaggerClient::Configuration::api_key_prefix->{'session_id'} = "Bearer";
 
 my $api_instance = WWW::SwaggerClient::TicketApi->new();
-my $body = WWW::SwaggerClient::Object::Body_4->new(); # Body_4 | Ticket object to be updated
+my $body = WWW::SwaggerClient::Object::Body_5->new(); # Body_5 | Ticket object to be updated
 my $ticketId = ticketId_example; # String | ID of ticket to be changed, must be admin
 
 eval { 
@@ -3214,7 +3311,7 @@ swagger_client.configuration.api_key['session_id'] = 'YOUR_API_KEY'
 
 # create an instance of the API class
 api_instance = swagger_client.TicketApi()
-body =  # Body_4 | Ticket object to be updated
+body =  # Body_5 | Ticket object to be updated
 ticketId = ticketId_example # String | ID of ticket to be changed, must be admin
 
 try: 
@@ -3275,7 +3372,7 @@ except ApiException as e:
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/body_4"
+        "$ref" : "#/components/schemas/body_5"
       }
     }
   },
@@ -4234,7 +4331,7 @@ public class TicketApiExample {
         //cookieAuth.setApiKeyPrefix("Token");
 
         TicketApi apiInstance = new TicketApi();
-        Body_7 body = ; // Body_7 | Ticket ID to be inspected
+        Body_8 body = ; // Body_8 | Ticket ID to be inspected
         try {
             inline_response_200_3 result = apiInstance.inspectTicket(body);
             System.out.println(result);
@@ -4253,7 +4350,7 @@ public class TicketApiExample {
 
     public static void main(String[] args) {
         TicketApi apiInstance = new TicketApi();
-        Body_7 body = ; // Body_7 | Ticket ID to be inspected
+        Body_8 body = ; // Body_8 | Ticket ID to be inspected
         try {
             inline_response_200_3 result = apiInstance.inspectTicket(body);
             System.out.println(result);
@@ -4274,7 +4371,7 @@ public class TicketApiExample {
 [apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"session_id"];
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"session_id"];
-Body_7 *body = ; // Ticket ID to be inspected (optional)
+Body_8 *body = ; // Ticket ID to be inspected (optional)
 
 TicketApi *apiInstance = [[TicketApi alloc] init];
 
@@ -4337,7 +4434,7 @@ namespace Example
             // Configuration.Default.ApiKeyPrefix.Add("session_id", "Bearer");
 
             var apiInstance = new TicketApi();
-            var body = new Body_7(); // Body_7 | Ticket ID to be inspected (optional) 
+            var body = new Body_8(); // Body_8 | Ticket ID to be inspected (optional) 
 
             try
             {
@@ -4365,7 +4462,7 @@ Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('session_id',
 // Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('session_id', 'Bearer');
 
 $api_instance = new Swagger\Client\ApiTicketApi();
-$body = ; // Body_7 | Ticket ID to be inspected
+$body = ; // Body_8 | Ticket ID to be inspected
 
 try {
     $result = $api_instance->inspectTicket($body);
@@ -4387,7 +4484,7 @@ $WWW::SwaggerClient::Configuration::api_key->{'session_id'} = 'YOUR_API_KEY';
 #$WWW::SwaggerClient::Configuration::api_key_prefix->{'session_id'} = "Bearer";
 
 my $api_instance = WWW::SwaggerClient::TicketApi->new();
-my $body = WWW::SwaggerClient::Object::Body_7->new(); # Body_7 | Ticket ID to be inspected
+my $body = WWW::SwaggerClient::Object::Body_8->new(); # Body_8 | Ticket ID to be inspected
 
 eval { 
     my $result = $api_instance->inspectTicket(body => $body);
@@ -4412,7 +4509,7 @@ swagger_client.configuration.api_key['session_id'] = 'YOUR_API_KEY'
 
 # create an instance of the API class
 api_instance = swagger_client.TicketApi()
-body =  # Body_7 | Ticket ID to be inspected (optional)
+body =  # Body_8 | Ticket ID to be inspected (optional)
 
 try: 
     # Inspect a ticket
@@ -4444,7 +4541,7 @@ except ApiException as e:
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/body_7"
+        "$ref" : "#/components/schemas/body_8"
       }
     }
   }
@@ -4596,7 +4693,7 @@ public class TicketApiExample {
         //cookieAuth.setApiKeyPrefix("Token");
 
         TicketApi apiInstance = new TicketApi();
-        Body_6 body = ; // Body_6 | Ticket ID to validate
+        Body_7 body = ; // Body_7 | Ticket ID to validate
         try {
             apiInstance.validateTicket(body);
         } catch (ApiException e) {
@@ -4614,7 +4711,7 @@ public class TicketApiExample {
 
     public static void main(String[] args) {
         TicketApi apiInstance = new TicketApi();
-        Body_6 body = ; // Body_6 | Ticket ID to validate
+        Body_7 body = ; // Body_7 | Ticket ID to validate
         try {
             apiInstance.validateTicket(body);
         } catch (ApiException e) {
@@ -4634,7 +4731,7 @@ public class TicketApiExample {
 [apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"session_id"];
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"session_id"];
-Body_6 *body = ; // Ticket ID to validate (optional)
+Body_7 *body = ; // Ticket ID to validate (optional)
 
 TicketApi *apiInstance = [[TicketApi alloc] init];
 
@@ -4694,7 +4791,7 @@ namespace Example
             // Configuration.Default.ApiKeyPrefix.Add("session_id", "Bearer");
 
             var apiInstance = new TicketApi();
-            var body = new Body_6(); // Body_6 | Ticket ID to validate (optional) 
+            var body = new Body_7(); // Body_7 | Ticket ID to validate (optional) 
 
             try
             {
@@ -4721,7 +4818,7 @@ Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('session_id',
 // Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('session_id', 'Bearer');
 
 $api_instance = new Swagger\Client\ApiTicketApi();
-$body = ; // Body_6 | Ticket ID to validate
+$body = ; // Body_7 | Ticket ID to validate
 
 try {
     $api_instance->validateTicket($body);
@@ -4742,7 +4839,7 @@ $WWW::SwaggerClient::Configuration::api_key->{'session_id'} = 'YOUR_API_KEY';
 #$WWW::SwaggerClient::Configuration::api_key_prefix->{'session_id'} = "Bearer";
 
 my $api_instance = WWW::SwaggerClient::TicketApi->new();
-my $body = WWW::SwaggerClient::Object::Body_6->new(); # Body_6 | Ticket ID to validate
+my $body = WWW::SwaggerClient::Object::Body_7->new(); # Body_7 | Ticket ID to validate
 
 eval { 
     $api_instance->validateTicket(body => $body);
@@ -4766,7 +4863,7 @@ swagger_client.configuration.api_key['session_id'] = 'YOUR_API_KEY'
 
 # create an instance of the API class
 api_instance = swagger_client.TicketApi()
-body =  # Body_6 | Ticket ID to validate (optional)
+body =  # Body_7 | Ticket ID to validate (optional)
 
 try: 
     # Validate a ticket
@@ -4797,7 +4894,7 @@ except ApiException as e:
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/body_6"
+        "$ref" : "#/components/schemas/body_7"
       }
     }
   }
@@ -4920,7 +5017,7 @@ public class TransportLineApiExample {
         //cookieAuth.setApiKeyPrefix("Token");
 
         TransportLineApi apiInstance = new TransportLineApi();
-        Body_8 body = ; // Body_8 | Transport line details to add
+        Body_9 body = ; // Body_9 | Transport line details to add
         try {
             apiInstance.addTransportLine(body);
         } catch (ApiException e) {
@@ -4938,7 +5035,7 @@ public class TransportLineApiExample {
 
     public static void main(String[] args) {
         TransportLineApi apiInstance = new TransportLineApi();
-        Body_8 body = ; // Body_8 | Transport line details to add
+        Body_9 body = ; // Body_9 | Transport line details to add
         try {
             apiInstance.addTransportLine(body);
         } catch (ApiException e) {
@@ -4958,7 +5055,7 @@ public class TransportLineApiExample {
 [apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"session_id"];
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"session_id"];
-Body_8 *body = ; // Transport line details to add (optional)
+Body_9 *body = ; // Transport line details to add (optional)
 
 TransportLineApi *apiInstance = [[TransportLineApi alloc] init];
 
@@ -5018,7 +5115,7 @@ namespace Example
             // Configuration.Default.ApiKeyPrefix.Add("session_id", "Bearer");
 
             var apiInstance = new TransportLineApi();
-            var body = new Body_8(); // Body_8 | Transport line details to add (optional) 
+            var body = new Body_9(); // Body_9 | Transport line details to add (optional) 
 
             try
             {
@@ -5045,7 +5142,7 @@ Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('session_id',
 // Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('session_id', 'Bearer');
 
 $api_instance = new Swagger\Client\ApiTransportLineApi();
-$body = ; // Body_8 | Transport line details to add
+$body = ; // Body_9 | Transport line details to add
 
 try {
     $api_instance->addTransportLine($body);
@@ -5066,7 +5163,7 @@ $WWW::SwaggerClient::Configuration::api_key->{'session_id'} = 'YOUR_API_KEY';
 #$WWW::SwaggerClient::Configuration::api_key_prefix->{'session_id'} = "Bearer";
 
 my $api_instance = WWW::SwaggerClient::TransportLineApi->new();
-my $body = WWW::SwaggerClient::Object::Body_8->new(); # Body_8 | Transport line details to add
+my $body = WWW::SwaggerClient::Object::Body_9->new(); # Body_9 | Transport line details to add
 
 eval { 
     $api_instance->addTransportLine(body => $body);
@@ -5090,7 +5187,7 @@ swagger_client.configuration.api_key['session_id'] = 'YOUR_API_KEY'
 
 # create an instance of the API class
 api_instance = swagger_client.TransportLineApi()
-body =  # Body_8 | Transport line details to add (optional)
+body =  # Body_9 | Transport line details to add (optional)
 
 try: 
     # Add a new transport line
@@ -5121,7 +5218,7 @@ except ApiException as e:
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/body_8"
+        "$ref" : "#/components/schemas/body_9"
       }
     }
   }
@@ -5225,7 +5322,7 @@ public class TransportLineApiExample {
         //cookieAuth.setApiKeyPrefix("Token");
 
         TransportLineApi apiInstance = new TransportLineApi();
-        Body_9 body = ; // Body_9 | Line object to be updated
+        Body_10 body = ; // Body_10 | Line object to be updated
         String lineId = lineId_example; // String | Line ID of transport line to be changed
         try {
             apiInstance.changeLineData(body, lineId);
@@ -5244,7 +5341,7 @@ public class TransportLineApiExample {
 
     public static void main(String[] args) {
         TransportLineApi apiInstance = new TransportLineApi();
-        Body_9 body = ; // Body_9 | Line object to be updated
+        Body_10 body = ; // Body_10 | Line object to be updated
         String lineId = lineId_example; // String | Line ID of transport line to be changed
         try {
             apiInstance.changeLineData(body, lineId);
@@ -5265,7 +5362,7 @@ public class TransportLineApiExample {
 [apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"session_id"];
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"session_id"];
-Body_9 *body = ; // Line object to be updated
+Body_10 *body = ; // Line object to be updated
 String *lineId = lineId_example; // Line ID of transport line to be changed
 
 TransportLineApi *apiInstance = [[TransportLineApi alloc] init];
@@ -5292,7 +5389,7 @@ cookieAuth.apiKey = "YOUR API KEY"
 //cookieAuth.apiKeyPrefix['session_id'] = "Token"
 
 var api = new PublicTransport.TransportLineApi()
-var body = ; // {{Body_9}} Line object to be updated
+var body = ; // {{Body_10}} Line object to be updated
 var lineId = lineId_example; // {{String}} Line ID of transport line to be changed
 
 var callback = function(error, data, response) {
@@ -5329,7 +5426,7 @@ namespace Example
             // Configuration.Default.ApiKeyPrefix.Add("session_id", "Bearer");
 
             var apiInstance = new TransportLineApi();
-            var body = new Body_9(); // Body_9 | Line object to be updated
+            var body = new Body_10(); // Body_10 | Line object to be updated
             var lineId = lineId_example;  // String | Line ID of transport line to be changed
 
             try
@@ -5357,7 +5454,7 @@ Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('session_id',
 // Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('session_id', 'Bearer');
 
 $api_instance = new Swagger\Client\ApiTransportLineApi();
-$body = ; // Body_9 | Line object to be updated
+$body = ; // Body_10 | Line object to be updated
 $lineId = lineId_example; // String | Line ID of transport line to be changed
 
 try {
@@ -5379,7 +5476,7 @@ $WWW::SwaggerClient::Configuration::api_key->{'session_id'} = 'YOUR_API_KEY';
 #$WWW::SwaggerClient::Configuration::api_key_prefix->{'session_id'} = "Bearer";
 
 my $api_instance = WWW::SwaggerClient::TransportLineApi->new();
-my $body = WWW::SwaggerClient::Object::Body_9->new(); # Body_9 | Line object to be updated
+my $body = WWW::SwaggerClient::Object::Body_10->new(); # Body_10 | Line object to be updated
 my $lineId = lineId_example; # String | Line ID of transport line to be changed
 
 eval { 
@@ -5404,7 +5501,7 @@ swagger_client.configuration.api_key['session_id'] = 'YOUR_API_KEY'
 
 # create an instance of the API class
 api_instance = swagger_client.TransportLineApi()
-body =  # Body_9 | Line object to be updated
+body =  # Body_10 | Line object to be updated
 lineId = lineId_example # String | Line ID of transport line to be changed
 
 try: 
@@ -5465,7 +5562,7 @@ except ApiException as e:
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/body_9"
+        "$ref" : "#/components/schemas/body_10"
       }
     }
   },
@@ -6427,7 +6524,7 @@ public class UserApiExample {
         //cookieAuth.setApiKeyPrefix("Token");
 
         UserApi apiInstance = new UserApi();
-        Body_2 body = ; // Body_2 | User object to be updated
+        Body_3 body = ; // Body_3 | User object to be updated
         String userId = userId_example; // String | ID of user to be changed, must be admin or logged in user
         try {
             apiInstance.changeUserData(body, userId);
@@ -6446,7 +6543,7 @@ public class UserApiExample {
 
     public static void main(String[] args) {
         UserApi apiInstance = new UserApi();
-        Body_2 body = ; // Body_2 | User object to be updated
+        Body_3 body = ; // Body_3 | User object to be updated
         String userId = userId_example; // String | ID of user to be changed, must be admin or logged in user
         try {
             apiInstance.changeUserData(body, userId);
@@ -6467,7 +6564,7 @@ public class UserApiExample {
 [apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"session_id"];
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"session_id"];
-Body_2 *body = ; // User object to be updated
+Body_3 *body = ; // User object to be updated
 String *userId = userId_example; // ID of user to be changed, must be admin or logged in user
 
 UserApi *apiInstance = [[UserApi alloc] init];
@@ -6494,7 +6591,7 @@ cookieAuth.apiKey = "YOUR API KEY"
 //cookieAuth.apiKeyPrefix['session_id'] = "Token"
 
 var api = new PublicTransport.UserApi()
-var body = ; // {{Body_2}} User object to be updated
+var body = ; // {{Body_3}} User object to be updated
 var userId = userId_example; // {{String}} ID of user to be changed, must be admin or logged in user
 
 var callback = function(error, data, response) {
@@ -6531,7 +6628,7 @@ namespace Example
             // Configuration.Default.ApiKeyPrefix.Add("session_id", "Bearer");
 
             var apiInstance = new UserApi();
-            var body = new Body_2(); // Body_2 | User object to be updated
+            var body = new Body_3(); // Body_3 | User object to be updated
             var userId = userId_example;  // String | ID of user to be changed, must be admin or logged in user
 
             try
@@ -6559,7 +6656,7 @@ Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('session_id',
 // Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('session_id', 'Bearer');
 
 $api_instance = new Swagger\Client\ApiUserApi();
-$body = ; // Body_2 | User object to be updated
+$body = ; // Body_3 | User object to be updated
 $userId = userId_example; // String | ID of user to be changed, must be admin or logged in user
 
 try {
@@ -6581,7 +6678,7 @@ $WWW::SwaggerClient::Configuration::api_key->{'session_id'} = 'YOUR_API_KEY';
 #$WWW::SwaggerClient::Configuration::api_key_prefix->{'session_id'} = "Bearer";
 
 my $api_instance = WWW::SwaggerClient::UserApi->new();
-my $body = WWW::SwaggerClient::Object::Body_2->new(); # Body_2 | User object to be updated
+my $body = WWW::SwaggerClient::Object::Body_3->new(); # Body_3 | User object to be updated
 my $userId = userId_example; # String | ID of user to be changed, must be admin or logged in user
 
 eval { 
@@ -6606,7 +6703,7 @@ swagger_client.configuration.api_key['session_id'] = 'YOUR_API_KEY'
 
 # create an instance of the API class
 api_instance = swagger_client.UserApi()
-body =  # Body_2 | User object to be updated
+body =  # Body_3 | User object to be updated
 userId = userId_example # String | ID of user to be changed, must be admin or logged in user
 
 try: 
@@ -6667,7 +6764,7 @@ except ApiException as e:
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/body_2"
+        "$ref" : "#/components/schemas/body_3"
       }
     }
   },
@@ -8314,7 +8411,7 @@ public class VehicleApiExample {
         //cookieAuth.setApiKeyPrefix("Token");
 
         VehicleApi apiInstance = new VehicleApi();
-        Body_10 body = ; // Body_10 | Vehicle line details to add
+        Body_11 body = ; // Body_11 | Vehicle line details to add
         try {
             apiInstance.addVehicle(body);
         } catch (ApiException e) {
@@ -8332,7 +8429,7 @@ public class VehicleApiExample {
 
     public static void main(String[] args) {
         VehicleApi apiInstance = new VehicleApi();
-        Body_10 body = ; // Body_10 | Vehicle line details to add
+        Body_11 body = ; // Body_11 | Vehicle line details to add
         try {
             apiInstance.addVehicle(body);
         } catch (ApiException e) {
@@ -8352,7 +8449,7 @@ public class VehicleApiExample {
 [apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"session_id"];
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"session_id"];
-Body_10 *body = ; // Vehicle line details to add (optional)
+Body_11 *body = ; // Vehicle line details to add (optional)
 
 VehicleApi *apiInstance = [[VehicleApi alloc] init];
 
@@ -8412,7 +8509,7 @@ namespace Example
             // Configuration.Default.ApiKeyPrefix.Add("session_id", "Bearer");
 
             var apiInstance = new VehicleApi();
-            var body = new Body_10(); // Body_10 | Vehicle line details to add (optional) 
+            var body = new Body_11(); // Body_11 | Vehicle line details to add (optional) 
 
             try
             {
@@ -8439,7 +8536,7 @@ Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('session_id',
 // Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('session_id', 'Bearer');
 
 $api_instance = new Swagger\Client\ApiVehicleApi();
-$body = ; // Body_10 | Vehicle line details to add
+$body = ; // Body_11 | Vehicle line details to add
 
 try {
     $api_instance->addVehicle($body);
@@ -8460,7 +8557,7 @@ $WWW::SwaggerClient::Configuration::api_key->{'session_id'} = 'YOUR_API_KEY';
 #$WWW::SwaggerClient::Configuration::api_key_prefix->{'session_id'} = "Bearer";
 
 my $api_instance = WWW::SwaggerClient::VehicleApi->new();
-my $body = WWW::SwaggerClient::Object::Body_10->new(); # Body_10 | Vehicle line details to add
+my $body = WWW::SwaggerClient::Object::Body_11->new(); # Body_11 | Vehicle line details to add
 
 eval { 
     $api_instance->addVehicle(body => $body);
@@ -8484,7 +8581,7 @@ swagger_client.configuration.api_key['session_id'] = 'YOUR_API_KEY'
 
 # create an instance of the API class
 api_instance = swagger_client.VehicleApi()
-body =  # Body_10 | Vehicle line details to add (optional)
+body =  # Body_11 | Vehicle line details to add (optional)
 
 try: 
     # Add a new vehicle
@@ -8515,7 +8612,7 @@ except ApiException as e:
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/body_10"
+        "$ref" : "#/components/schemas/body_11"
       }
     }
   }
@@ -8619,7 +8716,7 @@ public class VehicleApiExample {
         //cookieAuth.setApiKeyPrefix("Token");
 
         VehicleApi apiInstance = new VehicleApi();
-        Body_11 body = ; // Body_11 | Vehicle object to be updated
+        Body_12 body = ; // Body_12 | Vehicle object to be updated
         String vehicleId = vehicleId_example; // String | ID if vehicle to be changed
         try {
             apiInstance.changeVehicleData(body, vehicleId);
@@ -8638,7 +8735,7 @@ public class VehicleApiExample {
 
     public static void main(String[] args) {
         VehicleApi apiInstance = new VehicleApi();
-        Body_11 body = ; // Body_11 | Vehicle object to be updated
+        Body_12 body = ; // Body_12 | Vehicle object to be updated
         String vehicleId = vehicleId_example; // String | ID if vehicle to be changed
         try {
             apiInstance.changeVehicleData(body, vehicleId);
@@ -8659,7 +8756,7 @@ public class VehicleApiExample {
 [apiConfig setApiKey:@"YOUR_API_KEY" forApiKeyIdentifier:@"session_id"];
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 //[apiConfig setApiKeyPrefix:@"Bearer" forApiKeyIdentifier:@"session_id"];
-Body_11 *body = ; // Vehicle object to be updated
+Body_12 *body = ; // Vehicle object to be updated
 String *vehicleId = vehicleId_example; // ID if vehicle to be changed
 
 VehicleApi *apiInstance = [[VehicleApi alloc] init];
@@ -8686,7 +8783,7 @@ cookieAuth.apiKey = "YOUR API KEY"
 //cookieAuth.apiKeyPrefix['session_id'] = "Token"
 
 var api = new PublicTransport.VehicleApi()
-var body = ; // {{Body_11}} Vehicle object to be updated
+var body = ; // {{Body_12}} Vehicle object to be updated
 var vehicleId = vehicleId_example; // {{String}} ID if vehicle to be changed
 
 var callback = function(error, data, response) {
@@ -8723,7 +8820,7 @@ namespace Example
             // Configuration.Default.ApiKeyPrefix.Add("session_id", "Bearer");
 
             var apiInstance = new VehicleApi();
-            var body = new Body_11(); // Body_11 | Vehicle object to be updated
+            var body = new Body_12(); // Body_12 | Vehicle object to be updated
             var vehicleId = vehicleId_example;  // String | ID if vehicle to be changed
 
             try
@@ -8751,7 +8848,7 @@ Swagger\Client\Configuration::getDefaultConfiguration()->setApiKey('session_id',
 // Swagger\Client\Configuration::getDefaultConfiguration()->setApiKeyPrefix('session_id', 'Bearer');
 
 $api_instance = new Swagger\Client\ApiVehicleApi();
-$body = ; // Body_11 | Vehicle object to be updated
+$body = ; // Body_12 | Vehicle object to be updated
 $vehicleId = vehicleId_example; // String | ID if vehicle to be changed
 
 try {
@@ -8773,7 +8870,7 @@ $WWW::SwaggerClient::Configuration::api_key->{'session_id'} = 'YOUR_API_KEY';
 #$WWW::SwaggerClient::Configuration::api_key_prefix->{'session_id'} = "Bearer";
 
 my $api_instance = WWW::SwaggerClient::VehicleApi->new();
-my $body = WWW::SwaggerClient::Object::Body_11->new(); # Body_11 | Vehicle object to be updated
+my $body = WWW::SwaggerClient::Object::Body_12->new(); # Body_12 | Vehicle object to be updated
 my $vehicleId = vehicleId_example; # String | ID if vehicle to be changed
 
 eval { 
@@ -8798,7 +8895,7 @@ swagger_client.configuration.api_key['session_id'] = 'YOUR_API_KEY'
 
 # create an instance of the API class
 api_instance = swagger_client.VehicleApi()
-body =  # Body_11 | Vehicle object to be updated
+body =  # Body_12 | Vehicle object to be updated
 vehicleId = vehicleId_example # String | ID if vehicle to be changed
 
 try: 
@@ -8859,7 +8956,7 @@ except ApiException as e:
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/body_11"
+        "$ref" : "#/components/schemas/body_12"
       }
     }
   },
@@ -9552,7 +9649,7 @@ public class VehicleApiExample {
         
         VehicleApi apiInstance = new VehicleApi();
         try {
-            array[body_11] result = apiInstance.getVehicles();
+            array[inline_response_200_7] result = apiInstance.getVehicles();
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling VehicleApi#getVehicles");
@@ -9570,7 +9667,7 @@ public class VehicleApiExample {
     public static void main(String[] args) {
         VehicleApi apiInstance = new VehicleApi();
         try {
-            array[body_11] result = apiInstance.getVehicles();
+            array[inline_response_200_7] result = apiInstance.getVehicles();
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling VehicleApi#getVehicles");
@@ -9589,7 +9686,7 @@ VehicleApi *apiInstance = [[VehicleApi alloc] init];
 
 // Get data for all transport vehicles
 [apiInstance getVehiclesWithCompletionHandler: 
-              ^(array[body_11] output, NSError* error) {
+              ^(array[inline_response_200_7] output, NSError* error) {
                             if (output) {
                                 NSLog(@"%@", output);
                             }
@@ -9637,7 +9734,7 @@ namespace Example
             try
             {
                 // Get data for all transport vehicles
-                array[body_11] result = apiInstance.getVehicles();
+                array[inline_response_200_7] result = apiInstance.getVehicles();
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -9729,7 +9826,7 @@ except ApiException as e:
       "schema" : {
         "type" : "array",
         "items" : {
-          "$ref" : "#/components/schemas/body_11"
+          "$ref" : "#/components/schemas/inline_response_200_7"
         },
         "x-content-type" : "application/json"
       }

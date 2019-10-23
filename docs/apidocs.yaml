@@ -99,6 +99,18 @@ paths:
         - auth
       summary: Change password for logged in user
       operationId: changePassword
+      requestBody:
+        description: Old password, and new password
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                oldPassword:
+                  type: string
+                newPassword:
+                  type: string
+        required: true
       responses:
         '200':
           description: Password changed successfully
@@ -370,7 +382,7 @@ paths:
                         type: string
                   price:
                     type: integer
-                    description: 'Price of ticket in HUF'
+                    description: Price of ticket in HUF
         '404':
           description: Ticket type not found
           content: {}
@@ -469,7 +481,7 @@ paths:
                           type: string
                     price:
                       type: integer
-                      description: 'Price of ticket in HUF'
+                      description: Price of ticket in HUF
   /tickets/buy:
     post:
       tags:
@@ -593,7 +605,7 @@ paths:
             schema:
               type: object
               properties:
-                number:
+                name:
                   type: string
                   description: 'Line number, must be unique'
                 type:
@@ -629,7 +641,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  number:
+                  name:
                     type: string
                     description: Line number
                   type:
@@ -661,7 +673,7 @@ paths:
             schema:
               type: object
               properties:
-                number:
+                name:
                   type: string
                 type:
                   type: integer
@@ -713,7 +725,7 @@ paths:
                 items:
                   type: object
                   properties:
-                    number:
+                    name:
                       type: string
                       description: Line number
                     type:
@@ -739,7 +751,7 @@ paths:
                 licencePlate:
                   type: string
                   description: 'Licence plate, must be unique'
-                lineId:
+                line:
                   type: string
                   description: Transport line id
       responses:
@@ -776,8 +788,15 @@ paths:
                     type: string
                     description: Licence plate
                   line:
-                    type: string
-                    description: Transport line
+                    type: object
+                    description: 'Line the vehicle belongs to, can be null'
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      type:
+                        type: string
                   id:
                     type: string
                     description: Vehcile ID
@@ -807,7 +826,7 @@ paths:
                 licencePlate:
                   type: string
                 line:
-                  type: integer
+                  type: string
         required: true
       responses:
         '200':
@@ -856,10 +875,21 @@ paths:
                 items:
                   type: object
                   properties:
+                    type:
+                      type: string
+                      description: 'Type of vehicle e.g. bus, tram, etc.'
                     licencePlate:
                       type: string
                     line:
-                      type: integer
+                      type: object
+                      description: 'Line the vehicle belongs to, can be null'
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        type:
+                          type: string
 components:
   schemas:
     User:
@@ -899,6 +929,9 @@ components:
         validFor:
           type: integer
           description: Interval of ticket validity in days (can be null)
+        price:
+          type: integer
+          description: 'Price of ticket in HUF'
         line:
           $ref: '#/components/schemas/Line'
           description: Line the ticket is valid for (can be null)
@@ -913,7 +946,7 @@ components:
           description: 'Type of line, e.g. bus, tram, etc.'
         name:
           type: string
-          description: 'Name of the line e.g. M3'
+          description: Name of the line e.g. M3
     Vehicle:
       type: object
       properties:
