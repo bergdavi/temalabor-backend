@@ -8,7 +8,6 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true
         },
         type: DataTypes.STRING,
-        validFrom: DataTypes.DATE,
         validFor: DataTypes.INTEGER,
         validTimeUnit: DataTypes.STRING,
 		line: {
@@ -27,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
             return null;
         }
         if(!startDate) {
-            startDate = this.validFrom;
+            return null;
         }
         const timeZoneOffset = 2;
         switch (this.validTimeUnit) {
@@ -40,7 +39,6 @@ module.exports = (sequelize, DataTypes) => {
             default:
                 throw "Wrong time unit";
         }
-
     };
 
     Ticket.associate = models => {
