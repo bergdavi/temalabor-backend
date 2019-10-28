@@ -892,16 +892,11 @@
   "type" : "object",
   "properties" : {
     "id" : {
-      "type" : "string"
+      "type" : "string",
+      "description" : "Id of the specific ticket"
     },
-    "type" : {
-      "type" : "string"
-    },
-    "typeId" : {
-      "type" : "integer"
-    },
-    "name" : {
-      "type" : "string"
+    "ticketType" : {
+      "$ref" : "#/components/schemas/useruserIdtickets_ticketType"
     },
     "validFrom" : {
       "type" : "string",
@@ -910,9 +905,6 @@
     "validUntil" : {
       "type" : "string",
       "format" : "date"
-    },
-    "validOnLine" : {
-      "type" : "string"
     }
   }
 };
@@ -1182,6 +1174,41 @@
       "items" : {
         "$ref" : "#/components/schemas/Ticket"
       }
+    }
+  }
+};
+            defs.useruserIdtickets_ticketType = {
+  "type" : "object",
+  "properties" : {
+    "typeId" : {
+      "type" : "string"
+    },
+    "type" : {
+      "type" : "string"
+    },
+    "validFor" : {
+      "type" : "integer"
+    },
+    "validTimeUnit" : {
+      "type" : "string"
+    },
+    "line" : {
+      "$ref" : "#/components/schemas/useruserIdtickets_ticketType_line"
+    }
+  },
+  "description" : "Ticket object of the ticket type"
+};
+            defs.useruserIdtickets_ticketType_line = {
+  "type" : "object",
+  "properties" : {
+    "id" : {
+      "type" : "string"
+    },
+    "name" : {
+      "type" : "string"
+    },
+    "type" : {
+      "type" : "string"
     }
   }
 };

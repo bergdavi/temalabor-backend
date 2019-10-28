@@ -100,7 +100,7 @@ paths:
       summary: Change password for logged in user
       operationId: changePassword
       requestBody:
-        description: Old password, and new password
+        description: 'Old password, and new password'
         content:
           application/json:
             schema:
@@ -253,20 +253,34 @@ paths:
                   properties:
                     id:
                       type: string
-                    type:
-                      type: string
-                    typeId:
-                      type: integer
-                    name:
-                      type: string
+                      description: 'Id of the specific ticket'
+                    ticketType:
+                      type: object
+                      description: 'Ticket object of the ticket type'
+                      properties:
+                        typeId:
+                          type: string
+                        type:
+                          type: string
+                        validFor:
+                          type: integer
+                        validTimeUnit:
+                          type: string
+                        line:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            name:
+                              type: string
+                            type:
+                              type: string
                     validFrom:
                       type: string
                       format: date
                     validUntil:
                       type: string
                       format: date
-                    validOnLine:
-                      type: string
         '401':
           description: 'Unauthorized, user not logged in'
           content: {}
@@ -980,13 +994,13 @@ components:
           description: User friendly name of ticket type
         validFor:
           type: integer
-          description: 'Interval of ticket validity (can be null)'
+          description: Interval of ticket validity (can be null)
         validTimeUnit:
           type: string
           description: 'Time unit of ticket validity, can be "hour" or "day"'
         price:
           type: integer
-          description: 'Price of ticket in HUF'
+          description: Price of ticket in HUF
         line:
           $ref: '#/components/schemas/Line'
           description: Line the ticket is valid for (can be null)
