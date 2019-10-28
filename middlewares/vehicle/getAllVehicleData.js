@@ -8,8 +8,6 @@ module.exports = function () {
                 id: vehicle.id,
                 type: vehicle.type,
                 licencePlate: vehicle.licencePlate,
-                // TODO decide which to use
-                //line: vehicle.line ? vehicle.line : '*'
                 line: vehicle.Line ? {
                     id: vehicle.Line.id,
                     name: vehicle.Line.name,
