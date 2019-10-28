@@ -34,6 +34,7 @@ curl -b cookie.txt -L https://temalabor2019-backend.azurewebsites.net/auth/logou
 * /user
   * /user
   * /user/{userId} (get, post, delete)
+  * /user/{userId}/tickets
   * /users
 * /line
   * /line
@@ -42,7 +43,9 @@ curl -b cookie.txt -L https://temalabor2019-backend.azurewebsites.net/auth/logou
 * /ticket
   * /ticket
   * /ticket/{ticketId} (get, post, delete)
+  * /ticket/{ticketId}/expiry
   * /tickets
+  * /tickets/buy
 
 ## Felhasználói jogosultságok
 
