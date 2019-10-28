@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
         if(!startDate) {
             return null;
         }
-        const timeZoneOffset = 2;
+        const timeZoneOffset = 1;
         switch (this.validTimeUnit) {
             case 'day':
                 let endDate = new Date(startDate.getTime() + this.validFor * 1000 * 60 * 60 * 24);
