@@ -253,10 +253,10 @@ paths:
                   properties:
                     id:
                       type: string
-                      description: 'Id of the specific ticket'
+                      description: Id of the specific ticket
                     ticketType:
                       type: object
-                      description: 'Ticket object of the ticket type'
+                      description: Ticket object of the ticket type
                       properties:
                         typeId:
                           type: string
@@ -331,8 +331,12 @@ paths:
             schema:
               type: object
               properties:
+                name:
+                  type: string
+                  description: 'Name of ticket type'
                 type:
                   type: string
+                  description: 'Type of ticket, can be lineTicket, timeTicket, passTicket'
                 validFor:
                   type: integer
                   description: 'Validity of ticket, if not given ticket is valid for a single line'
@@ -378,9 +382,12 @@ paths:
               schema:
                 type: object
                 properties:
+                  name:
+                    type: string
+                    description: 'Name of ticket type'
                   type:
                     type: string
-                    description: Ticket type
+                    description: 'Type of ticket, can be lineTicket, timeTicket, passTicket'
                   typeId:
                     type: string
                     description: Type ID
@@ -523,9 +530,12 @@ paths:
                 items:
                   type: object
                   properties:
+                    name:
+                      type: string
+                      description: 'Name of ticket type'
                     type:
                       type: string
-                      description: Ticket type
+                      description: 'Type of ticket, can be lineTicket, timeTicket, passTicket'
                     typeId:
                       type: string
                       description: Type ID
@@ -820,6 +830,9 @@ paths:
                 line:
                   type: string
                   description: Transport line id
+                type:
+                  type: string
+                  description: 'Type of vehicle, e.g. bus, tram, etc.'
       responses:
         '200':
           description: Vehicle added successfully
@@ -989,9 +1002,12 @@ components:
         typeId:
           type: string
           description: 'ID of ticket type, generated when adding ticket'
+        name:
+          type: string
+          description: 'Name of ticket type'
         type:
           type: string
-          description: User friendly name of ticket type
+          description: 'Type of ticket, can be lineTicket, timeTicket, passTicket'
         validFor:
           type: integer
           description: Interval of ticket validity (can be null)

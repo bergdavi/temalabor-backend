@@ -41,6 +41,18 @@ module.exports = (sequelize, DataTypes) => {
         }
     };
 
+    Ticket.prototype.getTypeName = function () {
+        let ticketType = 'lineTicket';
+        if(this.validFor) {
+            if(this.validTimeUnit === 'hour') {
+                ticketType = 'timeTicket';
+            } else if(this.validTimeUnit === 'day') {
+                ticketType = 'passTicket';
+            }
+        }
+        return ticketType;
+    };
+
     Ticket.associate = models => {
         Ticket.belongsTo(models.Line, {foreignKey: 'line'});
     };

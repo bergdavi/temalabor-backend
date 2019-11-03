@@ -9,7 +9,8 @@ module.exports = function () {
             }
             return res.json({
                 typeId: ticket.typeId,
-                type: ticket.type,
+                type: ticket.getTicketType(),
+                name: ticket.type,
                 validFor: ticket.validFor,
                 validTimeUnit: ticket.validTimeUnit,
                 price: ticket.price,

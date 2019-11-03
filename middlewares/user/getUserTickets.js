@@ -14,7 +14,8 @@ module.exports = function () {
                     validUntil: ticket.validUntil,
                     ticketType: {
                         typeId: ticket.Ticket.typeId,
-                        type: ticket.Ticket.type,
+                        type: ticket.getTicketType(),
+                        name: ticket.type,
                         validFor: ticket.Ticket.validFor,
                         validTimeUnit: ticket.Ticket.validTimeUnit,
                         line: {
