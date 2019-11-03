@@ -6,7 +6,7 @@ module.exports = function () {
             let ticketList = [];
             tickets.forEach(ticket => ticketList.push({
                 typeId: ticket.typeId,
-                type: ticket.getTicketType(),
+                type: ticket.getTypeName(),
                 name: ticket.type,
                 validFor: ticket.validFor,
                 validTimeUnit: ticket.validTimeUnit,

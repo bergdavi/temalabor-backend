@@ -9,7 +9,7 @@ module.exports = function () {
             }
             return res.json({
                 typeId: ticket.typeId,
-                type: ticket.getTicketType(),
+                type: ticket.getTypeName(),
                 name: ticket.type,
                 validFor: ticket.validFor,
                 validTimeUnit: ticket.validTimeUnit,
