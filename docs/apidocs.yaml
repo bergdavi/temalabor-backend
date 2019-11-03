@@ -333,10 +333,7 @@ paths:
               properties:
                 name:
                   type: string
-                  description: 'Name of ticket type'
-                type:
-                  type: string
-                  description: 'Type of ticket, can be lineTicket, timeTicket, passTicket'
+                  description: Name of ticket type
                 validFor:
                   type: integer
                   description: 'Validity of ticket, if not given ticket is valid for a single line'
@@ -384,7 +381,7 @@ paths:
                 properties:
                   name:
                     type: string
-                    description: 'Name of ticket type'
+                    description: Name of ticket type
                   type:
                     type: string
                     description: 'Type of ticket, can be lineTicket, timeTicket, passTicket'
@@ -432,7 +429,7 @@ paths:
             schema:
               type: object
               properties:
-                type:
+                name:
                   type: string
                 validFor:
                   type: integer
@@ -532,7 +529,7 @@ paths:
                   properties:
                     name:
                       type: string
-                      description: 'Name of ticket type'
+                      description: Name of ticket type
                     type:
                       type: string
                       description: 'Type of ticket, can be lineTicket, timeTicket, passTicket'
@@ -1004,7 +1001,7 @@ components:
           description: 'ID of ticket type, generated when adding ticket'
         name:
           type: string
-          description: 'Name of ticket type'
+          description: Name of ticket type
         type:
           type: string
           description: 'Type of ticket, can be lineTicket, timeTicket, passTicket'

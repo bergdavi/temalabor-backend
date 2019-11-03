@@ -9,7 +9,7 @@ module.exports = function () {
             }
         }
         models.Ticket.create({
-            type: req.body.type,
+            type: req.body.name,
             validFor: req.body.validFor,
             validTimeUnit: req.body.validTimeUnit,
             line: req.body.line,

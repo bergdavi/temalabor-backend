@@ -11,7 +11,7 @@ const deleteTicketMW = require('../middlewares/ticket/deleteTicket');
 
 
 router.post('/',
-	checkRequestParamsMW('type', 'price'),
+	checkRequestParamsMW('name', 'price'),
     checkUserLoginMW(),
 	checkUserIdMW('admin'),
 	addTicketMW()
