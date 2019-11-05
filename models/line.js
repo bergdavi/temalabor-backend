@@ -9,6 +9,9 @@ module.exports = (sequelize, DataTypes) => {
         },
         name: DataTypes.STRING,
         type: DataTypes.STRING
+    }, {
+        timestamps: true,
+        paranoid: true
     });
 
     return Line;

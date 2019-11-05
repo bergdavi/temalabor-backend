@@ -21,6 +21,9 @@ module.exports = (sequelize, DataTypes) => {
 				key: 'id'
 			}
 		}
+    }, {
+        timestamps: true,
+        paranoid: true
     });
 
     Vehicle.associate = models => {

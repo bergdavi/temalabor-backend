@@ -13,6 +13,9 @@ module.exports = (sequelize, DataTypes) => {
         idCard: DataTypes.STRING,
         type: DataTypes.STRING,
         password: DataTypes.STRING
+    }, {
+        timestamps: true,
+        paranoid: true
     });
 
     User.prototype.verifyPassword = function verifyPassword(password) {

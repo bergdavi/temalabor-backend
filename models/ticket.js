@@ -19,6 +19,9 @@ module.exports = (sequelize, DataTypes) => {
 			}
 		},
         price: DataTypes.INTEGER
+    }, {
+        timestamps: true,
+        paranoid: true
     });
 
     Ticket.prototype.getExpiration = function (startDate) {

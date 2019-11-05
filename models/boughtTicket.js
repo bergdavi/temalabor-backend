@@ -25,6 +25,9 @@ module.exports = (sequelize, DataTypes) => {
                 key: 'id'
             }
         },
+    }, {
+        timestamps: true,
+        paranoid: true
     });
 
     BoughtTicket.associate = models => {
