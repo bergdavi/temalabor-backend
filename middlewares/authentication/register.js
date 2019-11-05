@@ -15,10 +15,16 @@ module.exports = function () {
                 type: req.body.type
             }).then(function (user) {
                 if (user) {
-                    res.json({status: 'ok', description: 'User created successfully'});
+                    if(!req.user) {
+                        req.body.email = user.email;
+                        return next();
+                    }
+                    return res.redirect(`/user/${user.id}`);
                 } else {
                     return next(new ApplicationError('Error while creating user', 500));
                 }
+            }).catch(function(error) {
+                return next(new ApplicationError('Error while creating user', 500));
             });
         });
     };

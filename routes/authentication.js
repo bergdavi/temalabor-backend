@@ -13,7 +13,8 @@ router.post('/register',
     checkRequestParamsMW('email', 'password', 'name', 'idCard'),
     checkRegisterTypeMW(),
     checkUserNotExistsMW(),
-    registerMW()
+    registerMW(),
+	loginMW()
 );
 
 router.post('/logout',

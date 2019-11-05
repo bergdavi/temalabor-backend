@@ -43,8 +43,8 @@ paths:
                   description: 'Optional, value can be "user" (default), "inspector", "admin", creating inspector and admin user requires admin previliges'
         required: true
       responses:
-        '200':
-          description: The user has been registered
+        '302':
+          description: 'Registration is successful, user is logged in, redirect to /user/{userId}'
           content: {}
         '400':
           description: Bad request
