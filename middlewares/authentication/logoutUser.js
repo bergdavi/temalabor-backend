@@ -1,6 +1,8 @@
 module.exports = function () {
     return function (req, res, next) {
-        req.logout();
+        if(req.user) {
+            req.logout();
+        }
         res.redirect('/');
     };
 };
