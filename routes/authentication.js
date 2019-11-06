@@ -22,7 +22,7 @@ router.post('/logout',
 
 router.post('/login',
 	checkRequestParamsMW('email', 'password'),
-    loginMW()
+	loginMW()
 );
 
 module.exports = router;

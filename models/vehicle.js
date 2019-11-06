@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         // TODO add constraint so wrong type vehicle can't be assigned to line
         type: DataTypes.STRING,
 		line: {
-			type: DataTypes.STRING,
+			type: DataTypes.UUID,
 			allowNull: true,
 			references: {
 				model: 'Lines',

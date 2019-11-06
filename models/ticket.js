@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
         validFor: DataTypes.INTEGER,
         validTimeUnit: DataTypes.STRING,
 		line: {
-			type: DataTypes.STRING,
+			type: DataTypes.UUID,
 			allowNull: true,
 			references: {
 				model: 'Lines',

@@ -1,17 +1,21 @@
 {
   "development": {
-    "dialect": "sqlite",
-    "storage": "data/dev-db.sqlite3"
+    "username": "sql7310987",
+    "password": "jHvpdRut6M",
+    "database": "sql7310987",
+    "host": "sql7.freesqldatabase.com",
+    "dialect": "mysql",
+    "operatorsAliases": false
   },
   "test": {
     "dialect": "sqlite",
-    "storage": "data/test-db.sqlite3"
+    "storage": "data/dev-db.sqlite3"
   },
   "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
-    "host": "127.0.0.1",
+    "username": "sql7310987",
+    "password": "jHvpdRut6M",
+    "database": "sql7310987",
+    "host": "sql7.freesqldatabase.com",
     "dialect": "mysql",
     "operatorsAliases": false
   }

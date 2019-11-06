@@ -3,7 +3,7 @@ const ApplicationError = require('../../exceptions/ApplicationError');
 
 module.exports = function () {
     return function (req, res, next) {
-        passport.authenticate('local', function(err, user, info) {
+        passport.authenticate('local', function(err, user) {
             if (err) {
                 return next(err);
             }
@@ -14,7 +14,9 @@ module.exports = function () {
                 if (err) {
                     return next(err);
                 }
-                return res.redirect('/user');
+                req.session.save(function() {
+                    return res.redirect('/user');
+                });
             });
         })(req, res, next);
     };

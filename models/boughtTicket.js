@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
         validFrom: DataTypes.DATE,
         validUntil: DataTypes.DATE,
 		ticketType: {
-			type: DataTypes.STRING,
+			type: DataTypes.UUID,
 			allowNull: false,
 			references: {
 				model: 'Tickets',
@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
 			}
 		},
         user: {
-            type: DataTypes.STRING,
+            type: DataTypes.UUID,
             allowNull: false,
             references: {
                 model: 'Users',

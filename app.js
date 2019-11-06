@@ -61,7 +61,7 @@ app.use(session({
         db: models.sequelize
     }),
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: {
         maxAge: 365*24*60*60*1000 // 365 days
     }
@@ -87,7 +87,7 @@ app.use('/vehicle', vehicleRouter);
 app.use('/vehicles', vehiclesRouter);
 
 // Default error handler
-app.use(function (err, req, res, next) {
+app.use(function (err, req, res) {
     res.status(err.status || 500).json({error: err.message})
 });
 
