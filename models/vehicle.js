@@ -7,6 +7,10 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: DataTypes.UUIDV4,
             primaryKey: true
         },
+        changingId: {
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4
+        },
         licencePlate: {
             type: DataTypes.STRING,
             unique: true

@@ -7,6 +7,7 @@ const addVehicleMW = require('../middlewares/vehicle/addVehicle');
 const getVehicleDataMW = require('../middlewares/vehicle/getVehicleData');
 const updateVehicleDataMW = require('../middlewares/vehicle/updateVehicleData');
 const deleteVehicleMW = require('../middlewares/vehicle/deleteVehicle');
+const generateNewVehicleIdMW = require('../middlewares/vehicle/generateNewVehicleId');
 
 
 router.post('/',
@@ -26,6 +27,12 @@ router.post('/:vehicleId',
 	checkUserLoginMW(),
 	checkUserIdMW('admin'),
 	updateVehicleDataMW()
+);
+
+router.post('/:vehicleId/newid',
+	checkUserLoginMW(),
+	checkUserIdMW('admin'),
+	generateNewVehicleIdMW()
 );
 
 router.delete('/:vehicleId',

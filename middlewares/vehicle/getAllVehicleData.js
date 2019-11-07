@@ -6,6 +6,7 @@ module.exports = function () {
             let vehicleList = [];
             vehicles.forEach(vehicle => vehicleList.push({
                 id: vehicle.id,
+                validateId: vehicle.changingId,
                 type: vehicle.type,
                 licencePlate: vehicle.licencePlate,
                 line: vehicle.Line ? {

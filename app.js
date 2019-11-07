@@ -87,7 +87,7 @@ app.use('/vehicle', vehicleRouter);
 app.use('/vehicles', vehiclesRouter);
 
 // Default error handler
-app.use(function (err, req, res) {
+app.use(function (err, req, res, next) {
     res.status(err.status || 500).json({error: err.message})
 });
 

@@ -9,6 +9,7 @@ module.exports = function () {
             }
             return res.json({
                 id: vehicle.id,
+                validateId: vehicle.changingId,
                 type: vehicle.type,
                 licencePlate: vehicle.licencePlate,
                 line: vehicle.Line ? {

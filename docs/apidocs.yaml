@@ -876,6 +876,9 @@ paths:
                   id:
                     type: string
                     description: Vehcile ID
+                  validateId:
+                    type: string
+                    description: Vehicle ID to validate ticets with (can be changed)
         '404':
           description: Vehicle line not found
           content: {}
@@ -935,6 +938,29 @@ paths:
           content: {}
       security:
         - cookieAuth: []
+  '/vehicle/{vehicleId}/newid':
+    post:
+      tags:
+        - vehicle
+      summary: Generate new vehcile ID to validate tickets with
+      operationId: newVehicleId
+      description: 'Generate new vehicle ID, must be admin'
+      parameters:
+        - name: vehicleId
+          in: path
+          description: ID if vehicle to generate new ID for
+          required: true
+          schema:
+            type: string
+      responses:
+        '302':
+          description: ID generation was successful, edirects to /vehicle/{vehicleId}
+          content: {}
+        '400':
+          description: Bad request
+          content: {}
+      security:
+        - cookieAuth: []
   /vehicles:
     get:
       tags:
@@ -966,6 +992,12 @@ paths:
                           type: string
                         type:
                           type: string
+                    id:
+                      type: string
+                      description: Vehcile ID
+                    validateId:
+                      type: string
+                      description: Vehicle ID to validate ticets with (can be changed)
 components:
   schemas:
     User:
