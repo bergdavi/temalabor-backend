@@ -4,7 +4,11 @@ const router = express.Router();
 /* GET home page. */
 router.get('/',
     function(req, res, next) {
-      res.end("Temalabor backend");
+      res.json({
+            name: "Temalabor backend",
+            version: 1,
+            deployed: '2019.11.09 17:45'
+      });
 });
 
 module.exports = router;
