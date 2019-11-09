@@ -9,6 +9,9 @@ module.exports = (sequelize, DataTypes) => {
         },
         validFrom: DataTypes.DATE,
         validUntil: DataTypes.DATE,
+        lastValidated: DataTypes.DATE,
+        lastValidatedOn: DataTypes.UUID,
+        lastInspected: DataTypes.DATE,
 		ticketType: {
 			type: DataTypes.UUID,
 			allowNull: false,

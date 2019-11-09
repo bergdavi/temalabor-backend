@@ -1,10 +1,14 @@
-const moment = require('moment');
 const models  = require('../../models');
 const ApplicationError = require('../../exceptions/ApplicationError');
 
 module.exports = function () {
     return function (req, res, next) {
-        let validFrom = new Date(req.body.fromDate);
+        let validFrom;
+        if(req.body.fromDate) {
+            validFrom = new Date(req.body.fromDate);
+        } else {
+            validFrom = new Date();
+        }
         if(!(validFrom instanceof Date && !isNaN(validFrom.getTime()))) {
             return next(new ApplicationError(`Wrong date format, it should be ISO 8601`, 400));
         }
@@ -13,6 +17,10 @@ module.exports = function () {
                 return next(new ApplicationError(`Ticket with id ${req.body.typeId} does not exist`, 404));
             }
             let validUntil = ticket.getExpiration(validFrom);
+            if(ticket.getTypeName() === 'lineTicket') {
+                validFrom = null;
+                validUntil = null;
+            }
             models.BoughtTicket.create({
                 ticketType: req.body.typeId,
                 validFrom: validFrom,
