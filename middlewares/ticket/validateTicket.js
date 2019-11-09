@@ -71,7 +71,7 @@ module.exports = function () {
                         });
                     });
                 } else {
-                    return res.end({
+                    return res.json({
                         status: 'invalid',
                         ticket: null
                     });
