@@ -1,15 +1,17 @@
 const models  = require('../../models');
 const ApplicationError = require('../../exceptions/ApplicationError');
+const op = require('sequelize').Op;
 
 module.exports = function () {
     return function (req, res, next) {
         let now = new Date();
         models.Vehicle.findOne({
             where: {
-                $or: [
+                [op.or]: [
                     {id: req.body.vehicleId},
                     {changingId: req.body.vehicleId}
                 ]
+                // changingId: req.body.vehicleId
             }
         }).then(function(vehicle){
             if(!vehicle) {
@@ -19,13 +21,13 @@ module.exports = function () {
                 include: [{model: models.Ticket, include: [models.Line]}],
                 where: {
                     user: req.user.id,
-                    $or: [
+                    [op.or]: [
                         {
                             validFrom: null
                         },
                         {
-                            validFrom: {$lte: now},
-                            validUntil: {$gte: now}
+                            validFrom: {[op.lte]: now},
+                            validUntil: {[op.gte]: now}
                         }
                     ]
                 }
@@ -34,7 +36,7 @@ module.exports = function () {
                 let passTicket = undefined;
                 tickets.forEach(function(ticket) {
                     if(ticket.Ticket.Line === null || ticket.Ticket.Line.id === vehicle.id) {
-                        if(ticket.Ticket.getTypeName === 'lineTicket' && !ticket.lastValidated) {
+                        if(ticket.Ticket.getTypeName() === 'lineTicket' && !ticket.lastValidated) {
                             lineTicket = ticket;
                         } else {
                             passTicket = ticket;
@@ -45,8 +47,9 @@ module.exports = function () {
                 if(ticket) {
                     ticket.update({
                         lastValidated: now,
+                        lastValidatedOn: vehicle.id
                     }).then(function() {
-                        return res.end({
+                        return res.json({
                             status: 'validated',
                             ticket: {
                                 id: ticket.id,
@@ -58,11 +61,11 @@ module.exports = function () {
                                     name: ticket.Ticket.type,
                                     validFor: ticket.Ticket.validFor,
                                     validTimeUnit: ticket.Ticket.validTimeUnit,
-                                    line: {
+                                    line: ticket.Ticket.Line ? {
                                         id: ticket.Ticket.Line.id,
                                         name: ticket.Ticket.Line.name,
                                         type: ticket.Ticket.Line.type
-                                    }
+                                    } : null
                                 }
                             }
                         });
