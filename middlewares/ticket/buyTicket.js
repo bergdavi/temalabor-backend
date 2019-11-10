@@ -3,6 +3,7 @@ const ApplicationError = require('../../exceptions/ApplicationError');
 
 module.exports = function () {
     return function (req, res, next) {
+        let count = req.body.count ? req.body.count : 1;
         let validFrom;
         if(req.body.fromDate) {
             validFrom = new Date(req.body.fromDate);
@@ -21,12 +22,16 @@ module.exports = function () {
                 validFrom = null;
                 validUntil = null;
             }
-            models.BoughtTicket.create({
-                ticketType: req.body.typeId,
-                validFrom: validFrom,
-                validUntil: validUntil,
-                user: req.user.id
-            }).then(function (ticket) {
+            let createPromises = [];
+            for(let i = 0; i < count; i++) {
+                createPromises.push(models.BoughtTicket.create({
+                    ticketType: req.body.typeId,
+                    validFrom: validFrom,
+                    validUntil: validUntil,
+                    user: req.user.id
+                }));
+            }
+            Promise.all(createPromises).then(function (ticket) {
                 if (ticket) {
                     res.json({status: 'ok', description: 'Ticket bought successfully'});
                 } else {
