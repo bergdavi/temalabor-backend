@@ -7,7 +7,7 @@ router.get('/',
       res.json({
             name: "Temalabor backend",
             version: 1,
-            deployed: '2019.11.09 18:42'
+            deployed: '2019.11.10 11:10'
       });
 });
 
