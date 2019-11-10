@@ -11,7 +11,6 @@ module.exports = function () {
                     {id: req.body.vehicleId},
                     {changingId: req.body.vehicleId}
                 ]
-                // changingId: req.body.vehicleId
             }
         }).then(function(vehicle){
             if(!vehicle) {
@@ -55,6 +54,8 @@ module.exports = function () {
                                 id: ticket.id,
                                 validFrom: ticket.validFrom,
                                 validUntil: ticket.validUntil,
+                                lastValidated: ticket.lastValidated,
+                                lastValidatedOn: ticket.lastValidatedOn,
                                 ticketType: {
                                     typeId: ticket.Ticket.typeId,
                                     type: ticket.Ticket.getTypeName(),

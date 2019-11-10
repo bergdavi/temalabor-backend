@@ -13,6 +13,8 @@ module.exports = function () {
                     id: ticket.id,
                     validFrom: ticket.validFrom,
                     validUntil: ticket.validUntil,
+                    lastValidated: ticket.lastValidated,
+                    lastValidatedOn: ticket.lastValidatedOn,
                     ticketType: {
                         typeId: ticket.Ticket.typeId,
                         type: typeName,
