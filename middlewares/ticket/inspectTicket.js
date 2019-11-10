@@ -2,7 +2,7 @@ const models  = require('../../models');
 const ApplicationError = require('../../exceptions/ApplicationError');
 const op = require('sequelize').Op;
 
-function inspectTicket(tickets, vehicle) {
+function inspectTicket(tickets, vehicle, user) {
     let validTickets = [];
     tickets.forEach(function(ticket) {
         if(ticket.Ticket.getTypeName() === 'lineTicket') {
@@ -24,6 +24,13 @@ function inspectTicket(tickets, vehicle) {
     });
     return {
         status: validTickets.length === 0 ? 'invalid' : 'validated',
+        user: {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            idCard: user.idCard,
+            type: user.type
+        },
         tickets: validTickets.map(function(ticket) {
             return {
                 id: ticket.id,
@@ -63,7 +70,7 @@ module.exports = function () {
             }
             models.User.findOne({where: {id: req.body.id},  include: [{model: models.BoughtTicket, include: [{model: models.Ticket, include: [models.Line]}]}]}).then(function (user) {
                 if(!user) {
-                    models.BoughtTicket.findOne({where: {id: req.body.id}, include: [{model: models.Ticket, include: [models.Line]}]}).then(function (ticket) {
+                    models.BoughtTicket.findOne({where: {id: req.body.id}, include: [{model: models.Ticket, include: [models.Line]}, {model: models.User}]}).then(function (ticket) {
                         if(ticket) {
                             res.json(inspectTicket([ticket], vehicle));
                         } else {
@@ -71,7 +78,7 @@ module.exports = function () {
                         }
                     });
                 } else {
-                    res.json(inspectTicket(user.BoughtTickets, vehicle));
+                    res.json(inspectTicket(user.BoughtTickets, vehicle, user));
                 }
             });
         });
