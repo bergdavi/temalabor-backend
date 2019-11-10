@@ -35,8 +35,11 @@ module.exports = function () {
                 let passTicket = undefined;
                 tickets.forEach(function(ticket) {
                     if(ticket.Ticket.Line === null || ticket.Ticket.Line.id === vehicle.id) {
-                        if(ticket.Ticket.getTypeName() === 'lineTicket' && !ticket.lastValidated) {
-                            lineTicket = ticket;
+                        console.log(ticket.Ticket.getTypeName());
+                        if(ticket.Ticket.getTypeName() === 'lineTicket') {
+                            if(!ticket.lastValidated) {
+                                lineTicket = ticket;
+                            }
                         } else {
                             passTicket = ticket;
                         }
