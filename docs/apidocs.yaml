@@ -575,6 +575,9 @@ paths:
                 fromDate:
                   type: string
                   description: 'Date for the ticket to be valid from, only required for passes'
+                count:
+                  type: integer
+                  description: 'Number of tickets to buy (default is 1)'
       responses:
         '200':
           description: Ticket successfully bought
@@ -601,16 +604,54 @@ paths:
             schema:
               type: object
               properties:
-                id:
+                vehicleId:
                   type: string
                   description: Ticket ID
       responses:
         '200':
           description: Ticket validated sucessfully
-          content: {}
-        '400':
-          description: 'Bad request, user doesn''t own this ticket / ticket has been already validated'
-          content: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: 'Can be "validated" (if user has valid ticket) or "invalid" (if user does not have valid ticket)'
+                  ticket:
+                    type: object
+                    description: 'The validated ticket / pass, null if user has no valid ticket'
+                    properties:
+                      id:
+                        type: string
+                        description: Id of the specific ticket
+                      ticketType:
+                        type: object
+                        description: Ticket object of the ticket type
+                        properties:
+                          typeId:
+                            type: string
+                          type:
+                            type: string
+                          validFor:
+                            type: integer
+                          validTimeUnit:
+                            type: string
+                          line:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              name:
+                                type: string
+                              type:
+                                type: string
+                      validFrom:
+                        type: string
+                        format: date
+                      validUntil:
+                        type: string
+                        format: date
         '401':
           description: 'Unauthorized, user not logged in'
           content: {}
@@ -954,7 +995,7 @@ paths:
             type: string
       responses:
         '302':
-          description: ID generation was successful, edirects to /vehicle/{vehicleId}
+          description: 'ID generation was successful, edirects to /vehicle/{vehicleId}'
           content: {}
         '400':
           description: Bad request
