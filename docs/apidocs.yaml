@@ -606,7 +606,10 @@ paths:
               properties:
                 vehicleId:
                   type: string
-                  description: Ticket ID
+                  description: Vehicle ID
+                ticketId:
+                  type: string
+                  description: Ticket ID (optional), if given, will try to validate specific ticket
       responses:
         '200':
           description: Ticket validated sucessfully

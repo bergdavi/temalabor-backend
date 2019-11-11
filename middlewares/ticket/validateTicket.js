@@ -18,7 +18,19 @@ module.exports = function () {
             }
             models.BoughtTicket.findAll({
                 include: [{model: models.Ticket, include: [models.Line]}],
-                where: {
+                where: req.body.ticketId ? {
+                    id: req.body.ticketId,
+                    user: req.user.id,
+                    [op.or]: [
+                        {
+                            validFrom: null
+                        },
+                        {
+                            validFrom: {[op.lte]: now},
+                            validUntil: {[op.gte]: now}
+                        }
+                    ]
+                } : {
                     user: req.user.id,
                     [op.or]: [
                         {
@@ -45,7 +57,7 @@ module.exports = function () {
                         }
                     }
                 });
-                let ticket = lineTicket? lineTicket : passTicket;
+                let ticket = passTicket? passTicket : lineTicket;
                 if(ticket) {
                     ticket.update({
                         lastValidated: now,
