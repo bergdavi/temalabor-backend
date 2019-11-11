@@ -577,7 +577,7 @@ paths:
                   description: 'Date for the ticket to be valid from, only required for passes'
                 count:
                   type: integer
-                  description: 'Number of tickets to buy (default is 1)'
+                  description: Number of tickets to buy (default is 1)
       responses:
         '200':
           description: Ticket successfully bought
@@ -617,7 +617,7 @@ paths:
                 properties:
                   status:
                     type: string
-                    description: 'Can be "validated" (if user has valid ticket) or "invalid" (if user does not have valid ticket)'
+                    description: Can be "validated" (if user has valid ticket) or "invalid" (if user does not have valid ticket)
                   ticket:
                     type: object
                     description: 'The validated ticket / pass, null if user has no valid ticket'
@@ -676,7 +676,10 @@ paths:
               properties:
                 id:
                   type: string
-                  description: Ticket ID
+                  description: Ticket ID / User ID to inspect
+                vehicleId:
+                  type: string
+                  description: Validation ID of vehicle to inspect on
       responses:
         '200':
           description: Ticket inspected successfully
@@ -687,16 +690,56 @@ paths:
                 properties:
                   status:
                     type: string
-                    description: 'Status of the ticket, can be valid, expired, invalid'
-                  validFrom:
-                    type: string
-                    description: 'Date ticket is valid from, today for line tickets'
-                  validUntil:
-                    type: string
-                    description: Date ticket is valid until today for line tickets
-                  line:
-                    type: string
-                    description: 'Line ticket is valid for, * if ticket is valid for all lines'
+                    description: 'Status of the ticket, can be "validated", "invalid"'
+                  user:
+                    type: object
+                    description: 'User the inspected ticket belongs to'
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      idCard:
+                        type: string
+                      type:
+                        type: string
+                  tickets:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: Id of the specific ticket
+                        ticketType:
+                          type: object
+                          description: Ticket object of the ticket type
+                          properties:
+                            typeId:
+                              type: string
+                            type:
+                              type: string
+                            validFor:
+                              type: integer
+                            validTimeUnit:
+                              type: string
+                            line:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                name:
+                                  type: string
+                                type:
+                                  type: string
+                        validFrom:
+                          type: string
+                          format: date
+                        validUntil:
+                          type: string
+                          format: date
         '401':
           description: 'Unauthorized, user not logged in, or is not inspector'
           content: {}
