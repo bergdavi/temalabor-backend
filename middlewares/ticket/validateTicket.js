@@ -18,7 +18,19 @@ module.exports = function () {
             }
             models.BoughtTicket.findAll({
                 include: [{model: models.Ticket, include: [models.Line]}],
-                where: {
+                where: req.body.ticketId ? {
+                    id: req.body.ticketId,
+                    user: req.user.id,
+                    [op.or]: [
+                        {
+                            validFrom: null
+                        },
+                        {
+                            validFrom: {[op.lte]: now},
+                            validUntil: {[op.gte]: now}
+                        }
+                    ]
+                } : {
                     user: req.user.id,
                     [op.or]: [
                         {
@@ -35,47 +47,51 @@ module.exports = function () {
                 let passTicket = undefined;
                 tickets.forEach(function(ticket) {
                     if(ticket.Ticket.Line === null || ticket.Ticket.Line.id === vehicle.id) {
-                        if(ticket.Ticket.getTypeName() === 'lineTicket' && !ticket.lastValidated) {
-                            lineTicket = ticket;
+                        console.log(ticket.Ticket.getTypeName());
+                        if(ticket.Ticket.getTypeName() === 'lineTicket') {
+                            if(!ticket.lastValidated) {
+                                lineTicket = ticket;
+                            }
                         } else {
                             passTicket = ticket;
                         }
                     }
                 });
-                let ticket = lineTicket? lineTicket : passTicket;
+                let ticket = passTicket ? passTicket : lineTicket;
                 if(ticket) {
-                    ticket.update({
-                        lastValidated: now,
+					let now = new Date();
+					let expire = new Date(now.getTime() + 1000*60*60*2);
+					let updatedTicket =  {
+						lastValidated: now,
                         lastValidatedOn: vehicle.id
-                    }).then(function() {
+					};
+					if(ticket.Ticket.getTypeName() === 'lineTicket') {
+						updatedTicket.validFrom = now;
+						updatedTicket.validUntil = expire;
+					}
+                    ticket.update(updatedTicket).then(function() {
                         return res.json({
-                            status: 'validated',
-                            ticket: {
-                                id: ticket.id,
-                                validFrom: ticket.validFrom,
-                                validUntil: ticket.validUntil,
-                                lastValidated: ticket.lastValidated,
-                                lastValidatedOn: ticket.lastValidatedOn,
-                                ticketType: {
-                                    typeId: ticket.Ticket.typeId,
-                                    type: ticket.Ticket.getTypeName(),
-                                    name: ticket.Ticket.type,
-                                    validFor: ticket.Ticket.validFor,
-                                    validTimeUnit: ticket.Ticket.validTimeUnit,
-                                    line: ticket.Ticket.Line ? {
-                                        id: ticket.Ticket.Line.id,
-                                        name: ticket.Ticket.Line.name,
-                                        type: ticket.Ticket.Line.type
-                                    } : null
-                                }
+                            id: ticket.id,
+                            validFrom: ticket.validFrom,
+                            validUntil: ticket.validUntil,
+                            lastValidated: ticket.lastValidated,
+                            lastValidatedOn: ticket.lastValidatedOn,
+                            ticketType: {
+                                typeId: ticket.Ticket.typeId,
+                                type: ticket.Ticket.getTypeName(),
+                                name: ticket.Ticket.type,
+                                validFor: ticket.Ticket.validFor,
+                                validTimeUnit: ticket.Ticket.validTimeUnit,
+                                line: ticket.Ticket.Line ? {
+                                    id: ticket.Ticket.Line.id,
+                                    name: ticket.Ticket.Line.name,
+                                    type: ticket.Ticket.Line.type
+                                } : null
                             }
                         });
                     });
                 } else {
-                    return res.json({
-                        status: 'invalid',
-                        ticket: null
-                    });
+                    return res.json(null);
                 }
             });
         });

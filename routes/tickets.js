@@ -28,7 +28,7 @@ router.post('/validate',
 router.post('/inspect',
     checkUserLoginMW(),
     checkUserIdMW('admin', 'inspector'),
-    checkRequestParamsMW('id'),
+    checkRequestParamsMW('id', 'vehicleId'),
     inspectTicketMW()
 );
 

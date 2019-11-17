@@ -31,9 +31,40 @@ module.exports = function () {
                     user: req.user.id
                 }));
             }
-            Promise.all(createPromises).then(function (ticket) {
-                if (ticket) {
-                    res.json({status: 'ok', description: 'Ticket bought successfully'});
+            Promise.all(createPromises).then(function (tickets) {
+                if (tickets) {
+                    let selectPromises = [];
+                    tickets.forEach(ticket => {
+                        selectPromises.push(models.BoughtTicket.findOne({where: {id: ticket.id}, include: [models.Ticket]}));
+                    });
+                    Promise.all(selectPromises).then(function (tickets) {
+                        if(tickets) {
+                            tickets = tickets.map((ticket => {
+                                return {
+                                    id: ticket.id,
+                                    validFrom: ticket.validFrom,
+                                    validUntil: ticket.validUntil,
+                                    lastValidated: ticket.lastValidated,
+                                    lastValidatedOn: ticket.lastValidatedOn,
+                                    ticketType: {
+                                        typeId: ticket.Ticket.typeId,
+                                        type: ticket.Ticket.getTypeName(),
+                                        name: ticket.Ticket.type,
+                                        validFor: ticket.Ticket.validFor,
+                                        validTimeUnit: ticket.Ticket.validTimeUnit,
+                                        line: ticket.Ticket.Line ? {
+                                            id: ticket.Ticket.Line.id,
+                                            name: ticket.Ticket.Line.name,
+                                            type: ticket.Ticket.Line.type
+                                        } : null
+                                    }
+                                }
+                            }));
+                            return res.json(tickets);
+                        } else {
+                            return next(new ApplicationError('Error while querying bought tickets', 500));
+                        }
+                    });
                 } else {
                     return next(new ApplicationError('Error while buying ticket', 500));
                 }

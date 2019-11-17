@@ -24,7 +24,7 @@ router.post('/:lineId',
 	updateLineDataMW()
 );
 
-router.delete('/:userId',
+router.delete('/:lineId',
 	checkUserLoginMW(),
     checkUserIdMW('admin'),
 	deleteLineMW()

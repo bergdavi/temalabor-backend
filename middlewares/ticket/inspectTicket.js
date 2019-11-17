@@ -23,7 +23,7 @@ function inspectTicket(tickets, vehicle, user) {
         });
     });
     return {
-        status: validTickets.length === 0 ? 'invalid' : 'validated',
+        status: (validTickets.length === 0 && user.type !== 'elder') ? 'invalid' : 'validated',
         user: {
             id: user.id,
             email: user.email,
@@ -72,7 +72,7 @@ module.exports = function () {
                 if(!user) {
                     models.BoughtTicket.findOne({where: {id: req.body.id}, include: [{model: models.Ticket, include: [models.Line]}, {model: models.User}]}).then(function (ticket) {
                         if(ticket) {
-                            res.json(inspectTicket([ticket], vehicle));
+                            res.json(inspectTicket([ticket], vehicle, ticket.User));
                         } else {
                             return next(new ApplicationError(`Ticket / User with id '${req.body.id}' not found`, 404));
                         }
