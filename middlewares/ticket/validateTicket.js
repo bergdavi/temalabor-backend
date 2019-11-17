@@ -57,12 +57,19 @@ module.exports = function () {
                         }
                     }
                 });
-                let ticket = passTicket? passTicket : lineTicket;
+                let ticket = passTicket ? passTicket : lineTicket;
                 if(ticket) {
-                    ticket.update({
-                        lastValidated: now,
+					let now = new Date();
+					let expire = new Date(now.getTime() + 1000*60*60*2);
+					let updatedTicket =  {
+						lastValidated: now,
                         lastValidatedOn: vehicle.id
-                    }).then(function() {
+					};
+					if(ticket.Ticket.getTypeName() == 'lineTicket') {
+						updatedTicket.validFrom = now;
+						updatedTicket.validUntil = expire;
+					}
+                    ticket.update(updatedTicket).then(function() {
                         return res.json({
                             status: 'validated',
                             ticket: {

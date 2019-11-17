@@ -23,7 +23,7 @@ function inspectTicket(tickets, vehicle, user) {
         });
     });
     return {
-        status: validTickets.length === 0 ? 'invalid' : 'validated',
+        status: (validTickets.length === 0 && user.type !== 'elder') ? 'invalid' : 'validated',
         user: {
             id: user.id,
             email: user.email,
