@@ -19,6 +19,7 @@ const ticketRouter = require('./routes/ticket');
 const ticketsRouter = require('./routes/tickets');
 const vehicleRouter = require('./routes/vehicle');
 const vehiclesRouter = require('./routes/vehicles');
+const statsRouter = require('./routes/stats');
 
 passport.use('local', new LocalStrategy({
         usernameField: 'email',
@@ -85,6 +86,8 @@ app.use('/tickets', ticketsRouter);
 
 app.use('/vehicle', vehicleRouter);
 app.use('/vehicles', vehiclesRouter);
+
+app.use('/stats', statsRouter);
 
 // Default error handler
 app.use(function (err, req, res, next) {
