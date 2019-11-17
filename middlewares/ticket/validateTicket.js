@@ -65,39 +65,33 @@ module.exports = function () {
 						lastValidated: now,
                         lastValidatedOn: vehicle.id
 					};
-					if(ticket.Ticket.getTypeName() == 'lineTicket') {
+					if(ticket.Ticket.getTypeName() === 'lineTicket') {
 						updatedTicket.validFrom = now;
 						updatedTicket.validUntil = expire;
 					}
                     ticket.update(updatedTicket).then(function() {
                         return res.json({
-                            status: 'validated',
-                            ticket: {
-                                id: ticket.id,
-                                validFrom: ticket.validFrom,
-                                validUntil: ticket.validUntil,
-                                lastValidated: ticket.lastValidated,
-                                lastValidatedOn: ticket.lastValidatedOn,
-                                ticketType: {
-                                    typeId: ticket.Ticket.typeId,
-                                    type: ticket.Ticket.getTypeName(),
-                                    name: ticket.Ticket.type,
-                                    validFor: ticket.Ticket.validFor,
-                                    validTimeUnit: ticket.Ticket.validTimeUnit,
-                                    line: ticket.Ticket.Line ? {
-                                        id: ticket.Ticket.Line.id,
-                                        name: ticket.Ticket.Line.name,
-                                        type: ticket.Ticket.Line.type
-                                    } : null
-                                }
+                            id: ticket.id,
+                            validFrom: ticket.validFrom,
+                            validUntil: ticket.validUntil,
+                            lastValidated: ticket.lastValidated,
+                            lastValidatedOn: ticket.lastValidatedOn,
+                            ticketType: {
+                                typeId: ticket.Ticket.typeId,
+                                type: ticket.Ticket.getTypeName(),
+                                name: ticket.Ticket.type,
+                                validFor: ticket.Ticket.validFor,
+                                validTimeUnit: ticket.Ticket.validTimeUnit,
+                                line: ticket.Ticket.Line ? {
+                                    id: ticket.Ticket.Line.id,
+                                    name: ticket.Ticket.Line.name,
+                                    type: ticket.Ticket.Line.type
+                                } : null
                             }
                         });
                     });
                 } else {
-                    return res.json({
-                        status: 'invalid',
-                        ticket: null
-                    });
+                    return res.json(null);
                 }
             });
         });
