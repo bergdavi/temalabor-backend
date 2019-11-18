@@ -570,42 +570,56 @@ paths:
           application/json:
             schema:
               type: object
-              description: 'The validated ticket / pass, null if user has no valid ticket'
               properties:
-                id:
+                typeId:
                   type: string
-                  description: Id of the specific ticket
-                ticketType:
-                  type: object
-                  description: Ticket object of the ticket type
-                  properties:
-                    typeId:
-                      type: string
-                    type:
-                      type: string
-                    validFor:
-                      type: integer
-                    validTimeUnit:
-                      type: string
-                    line:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                        name:
-                          type: string
-                        type:
-                          type: string
-                validFrom:
+                  description: Type id of ticket to buy
+                fromDate:
                   type: string
-                  format: date
-                validUntil:
-                  type: string
-                  format: date
+                  description: 'Date for the ticket to be valid from, only required for passes'
+                count:
+                  type: integer
+                  description: Number of tickets to buy (default is 1)
       responses:
         '200':
           description: Ticket successfully bought
-          content: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: Id of the specific ticket
+                    ticketType:
+                      type: object
+                      description: Ticket object of the ticket type
+                      properties:
+                        typeId:
+                          type: string
+                        type:
+                          type: string
+                        validFor:
+                          type: integer
+                        validTimeUnit:
+                          type: string
+                        line:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            name:
+                              type: string
+                            type:
+                              type: string
+                    validFrom:
+                      type: string
+                      format: date
+                    validUntil:
+                      type: string
+                      format: date
         '401':
           description: 'Unauthorized, user not logged in'
           content: {}
@@ -1122,10 +1136,10 @@ paths:
                   properties:
                     sold:
                       type: integer
-                      description: 'Number of tickets sold on a given day'
+                      description: Number of tickets sold on a given day
                     day:
                       type: string
-                      description: 'Day of the data point (yyyy-mm-dd format)'
+                      description: Day of the data point (yyyy-mm-dd format)
         '401':
           description: 'Unauthorized, user not logged in, or not admin'
           content: {}
@@ -1150,10 +1164,10 @@ paths:
                   properties:
                     sold:
                       type: integer
-                      description: 'Number of users registered a given day'
+                      description: Number of users registered a given day
                     day:
                       type: string
-                      description: 'Day of the data point (yyyy-mm-dd format)'
+                      description: Day of the data point (yyyy-mm-dd format)
         '401':
           description: 'Unauthorized, user not logged in, or not admin'
           content: {}
