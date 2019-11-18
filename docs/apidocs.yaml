@@ -16,6 +16,8 @@ tags:
     description: Getting and changing transport line data
   - name: vehicle
     description: Getting and changin vehicle data
+  - name: stats
+    description: Getting statistics of the service
 paths:
   /auth/register:
     post:
@@ -568,16 +570,38 @@ paths:
           application/json:
             schema:
               type: object
+              description: 'The validated ticket / pass, null if user has no valid ticket'
               properties:
-                typeId:
+                id:
                   type: string
-                  description: Type id of ticket to buy
-                fromDate:
+                  description: Id of the specific ticket
+                ticketType:
+                  type: object
+                  description: Ticket object of the ticket type
+                  properties:
+                    typeId:
+                      type: string
+                    type:
+                      type: string
+                    validFor:
+                      type: integer
+                    validTimeUnit:
+                      type: string
+                    line:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        type:
+                          type: string
+                validFrom:
                   type: string
-                  description: 'Date for the ticket to be valid from, only required for passes'
-                count:
-                  type: integer
-                  description: Number of tickets to buy (default is 1)
+                  format: date
+                validUntil:
+                  type: string
+                  format: date
       responses:
         '200':
           description: Ticket successfully bought
@@ -609,7 +633,7 @@ paths:
                   description: Vehicle ID
                 ticketId:
                   type: string
-                  description: Ticket ID (optional), if given, will try to validate specific ticket
+                  description: 'Ticket ID (optional), if given, will try to validate specific ticket'
       responses:
         '200':
           description: Ticket validated sucessfully
@@ -617,44 +641,38 @@ paths:
             application/json:
               schema:
                 type: object
+                description: 'The validated ticket / pass, null if user has no valid ticket'
                 properties:
-                  status:
+                  id:
                     type: string
-                    description: Can be "validated" (if user has valid ticket) or "invalid" (if user does not have valid ticket)
-                  ticket:
+                    description: Id of the specific ticket
+                  ticketType:
                     type: object
-                    description: 'The validated ticket / pass, null if user has no valid ticket'
+                    description: Ticket object of the ticket type
                     properties:
-                      id:
+                      typeId:
                         type: string
-                        description: Id of the specific ticket
-                      ticketType:
+                      type:
+                        type: string
+                      validFor:
+                        type: integer
+                      validTimeUnit:
+                        type: string
+                      line:
                         type: object
-                        description: Ticket object of the ticket type
                         properties:
-                          typeId:
+                          id:
+                            type: string
+                          name:
                             type: string
                           type:
                             type: string
-                          validFor:
-                            type: integer
-                          validTimeUnit:
-                            type: string
-                          line:
-                            type: object
-                            properties:
-                              id:
-                                type: string
-                              name:
-                                type: string
-                              type:
-                                type: string
-                      validFrom:
-                        type: string
-                        format: date
-                      validUntil:
-                        type: string
-                        format: date
+                  validFrom:
+                    type: string
+                    format: date
+                  validUntil:
+                    type: string
+                    format: date
         '401':
           description: 'Unauthorized, user not logged in'
           content: {}
@@ -696,7 +714,7 @@ paths:
                     description: 'Status of the ticket, can be "validated", "invalid"'
                   user:
                     type: object
-                    description: 'User the inspected ticket belongs to'
+                    description: User the inspected ticket belongs to
                     properties:
                       id:
                         type: string
@@ -1085,6 +1103,62 @@ paths:
                     validateId:
                       type: string
                       description: Vehicle ID to validate ticets with (can be changed)
+  /stats/sales:
+    get:
+      tags:
+        - stats
+      summary: Get sales statistics
+      description: 'Get number of tickets sold / day, must be admin'
+      operationId: getSalesStats
+      responses:
+        '200':
+          description: Sales statistics
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    sold:
+                      type: integer
+                      description: 'Number of tickets sold on a given day'
+                    day:
+                      type: string
+                      description: 'Day of the data point (yyyy-mm-dd format)'
+        '401':
+          description: 'Unauthorized, user not logged in, or not admin'
+          content: {}
+      security:
+        - cookieAuth: []
+  /stats/registrations:
+    get:
+      tags:
+        - stats
+      summary: Get registration statistics
+      description: 'Get number of tickets sold / day, must be admin'
+      operationId: getRegistrationStats
+      responses:
+        '200':
+          description: Registration statistics
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    sold:
+                      type: integer
+                      description: 'Number of users registered a given day'
+                    day:
+                      type: string
+                      description: 'Day of the data point (yyyy-mm-dd format)'
+        '401':
+          description: 'Unauthorized, user not logged in, or not admin'
+          content: {}
+      security:
+        - cookieAuth: []
 components:
   schemas:
     User:
