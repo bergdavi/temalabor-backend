@@ -4,8 +4,16 @@ const op = require('sequelize').Op;
 module.exports = function () {
     return function (req, res, next) {
         let until = new Date();
+        if(req.query.until) {
+            until = new Date(req.query.until);
+            until = new Date(until.getTime() + 1000*60*60);
+        }
         until.setUTCHours(23,59,59,999);
         let from = new Date(until.getTime() - 1000 * 60 * 60 * 24 * 30);
+        if(req.query.from) {
+            from = new Date(req.query.from);
+            from = new Date(from.getTime() + 1000*60*60);
+        }
         from.setUTCHours(0,0,0,0);
 
         models.User.findAll({where: {
