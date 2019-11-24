@@ -40,12 +40,22 @@ curl -b cookie.txt -L https://temalabor2019-backend.azurewebsites.net/auth/logou
   * /line
   * /line/{lineId} (get, post, delete)
   * /lines
+* /vehicle
+  * /vehicle
+  * /vehicle/{vehicleId} (get, post, delete)
+  * /vehicle/{vehicleId}/newid
+  * /vehicles
 * /ticket
   * /ticket
   * /ticket/{ticketId} (get, post, delete)
   * /ticket/{ticketId}/expiry
   * /tickets
   * /tickets/buy
+  * /tickets/validate
+  * /tickets/inspect
+* /stats
+  * /stats/sales
+  * /stats/registrations
 
 ## Felhasználói jogosultságok
 
@@ -67,9 +77,6 @@ curl -b cookie.txt -L https://temalabor2019-backend.azurewebsites.net/auth/logou
 * inspector / inspector
 * admin / admin
 
-
-Jelenleg az alkalmazás egy a docker konténerben található SQLite adatbázist használ, így a jelenleg benne lévő adatok a fejlesztés során eltűnhetnek
-
 ## Futtatás lokális környezetben
 
 Az alkalmazás alapértelmezetten a 3000-es portot használja
@@ -79,8 +86,6 @@ Az alkalmazás alapértelmezetten a 3000-es portot használja
 A futtatáshoz szükséges parancsok (a projekt gyökérkönyvtárában):
 
 ```
-mkdir data
-
 npm i
 
 npm start
