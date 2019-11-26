@@ -8,6 +8,9 @@ module.exports = function () {
                 return next(new ApplicationError(`User with id ${req.params.userId} does not exist`, 400));
             }
             let tickets = user.BoughtTickets.map((ticket => {
+                if(!ticket.Ticket) {
+                    return null;
+                }
                 let typeName = ticket.Ticket.getTypeName();
                 return {
                     id: ticket.id,
@@ -29,6 +32,9 @@ module.exports = function () {
                     }
                 }
             }));
+            tickets = tickets.filter(function(ticket) {
+                return ticket != null;
+            });
             return res.json(tickets);
         });
     };
