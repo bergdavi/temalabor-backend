@@ -5,12 +5,12 @@ const op = require('sequelize').Op;
 function inspectTicket(tickets, vehicle, user) {
     let validTickets = [];
     tickets.forEach(function(ticket) {
+        let now = new Date();
         if(ticket.Ticket.getTypeName() === 'lineTicket') {
-            if([vehicle.id, vehicle.changingId].includes(ticket.lastValidatedOn)) {
+            if(now > ticket.validFrom && now < ticket.validUntil && [vehicle.id, vehicle.changingId].includes(ticket.lastValidatedOn)) {
                 validTickets.push(ticket);
             }
         } else {
-            let now = new Date();
             if(now > ticket.validFrom && now < ticket.validUntil && (ticket.Ticket.line === null || ticket.Ticket.line === vehicle.line)) {
                 validTickets.push(ticket);
             }
