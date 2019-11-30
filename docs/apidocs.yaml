@@ -1,0 +1,1256 @@
+openapi: 3.0.1
+info:
+  title: Public Transport
+  description: Backend API for Public Transport project
+  version: 1.0.0
+servers:
+  - url: 'https://temalabor2019.azurewebsites.net/api/'
+tags:
+  - name: auth
+    description: Registering and authenticating users
+  - name: user
+    description: Getting and changing user data
+  - name: ticket
+    description: Getting and changing ticket data
+  - name: transport line
+    description: Getting and changing transport line data
+  - name: vehicle
+    description: Getting and changin vehicle data
+  - name: stats
+    description: Getting statistics of the service
+paths:
+  /auth/register:
+    post:
+      tags:
+        - auth
+      summary: Register a new user
+      operationId: registerUser
+      requestBody:
+        description: User object to be registered
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                idCard:
+                  type: string
+                password:
+                  type: string
+                type:
+                  type: string
+                  description: 'Optional, value can be "user" (default), "inspector", "admin", creating inspector and admin user requires admin previliges'
+        required: true
+      responses:
+        '302':
+          description: 'Registration is successful, user is logged in, redirect to /user/{userId}'
+          content: {}
+        '400':
+          description: Bad request
+          content: {}
+      security:
+        - cookieAuth: []
+  /auth/login:
+    post:
+      tags:
+        - auth
+      summary: Login an existing user
+      operationId: loginUser
+      requestBody:
+        description: User object to be logged in
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+        required: true
+      responses:
+        '302':
+          description: 'Authentication is successful, redirect to /user/{userId}'
+          content: {}
+        '400':
+          description: Bad request
+          content: {}
+      security:
+        - cookieAuth: []
+  /auth/logout:
+    post:
+      tags:
+        - auth
+      summary: Logout a logged in existing user
+      operationId: logoutUser
+      responses:
+        '200':
+          description: User successfully logged out
+          content: {}
+        '401':
+          description: 'Unauthorized, user not logged in'
+          content: {}
+      security:
+        - cookieAuth: []
+  /auth/password:
+    post:
+      tags:
+        - auth
+      summary: Change password for logged in user
+      operationId: changePassword
+      requestBody:
+        description: 'Old password, and new password'
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                oldPassword:
+                  type: string
+                newPassword:
+                  type: string
+        required: true
+      responses:
+        '200':
+          description: Password changed successfully
+          content: {}
+        '401':
+          description: 'Unauthorized, user not logged in'
+          content: {}
+        '403':
+          description: Wrong password
+          content: {}
+      security:
+        - cookieAuth: []
+  /user:
+    get:
+      tags:
+        - user
+      summary: Get data for logged in user
+      operationId: getLoggedinUser
+      responses:
+        '302':
+          description: 'redirect to /user/{userId}'
+          content: {}
+        '401':
+          description: 'Unauthorized, user not logged in'
+          content: {}
+      security:
+        - cookieAuth: []
+  '/user/{userId}':
+    get:
+      tags:
+        - user
+      summary: Get data for specific user
+      operationId: getUser
+      parameters:
+        - name: userId
+          in: path
+          description: 'ID of user to return, must have inspector or admin previliges, or be the logged in user'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  email:
+                    type: string
+                  idCard:
+                    type: string
+                  type:
+                    type: string
+        '401':
+          description: 'Unauthorized, user not logged in'
+          content: {}
+      security:
+        - cookieAuth: []
+    post:
+      tags:
+        - user
+      summary: Change user data
+      operationId: changeUserData
+      parameters:
+        - name: userId
+          in: path
+          description: 'ID of user to be changed, must be admin or logged in user'
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: User object to be updated
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                idCard:
+                  type: string
+        required: true
+      responses:
+        '200':
+          description: The user has been modified
+          content: {}
+        '400':
+          description: Bad request
+          content: {}
+      security:
+        - cookieAuth: []
+    delete:
+      tags:
+        - user
+      summary: Delete user
+      operationId: deleteUser
+      parameters:
+        - name: userId
+          in: path
+          description: 'ID of user to be deleted, must be admin or logged in user'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The user has been deleted
+          content: {}
+        '401':
+          description: User not logged in
+          content: {}
+      security:
+        - cookieAuth: []
+  '/user/{userId}/tickets':
+    get:
+      tags:
+        - user
+      summary: Get list of owned tickets for specific user
+      operationId: getUserTickets
+      parameters:
+        - name: userId
+          in: path
+          description: 'ID of user to return owned tickets for, must have inspector or admin previliges, or be the logged in user'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of owned tickets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: Id of the specific ticket
+                    ticketType:
+                      type: object
+                      description: Ticket object of the ticket type
+                      properties:
+                        typeId:
+                          type: string
+                        type:
+                          type: string
+                        validFor:
+                          type: integer
+                        validTimeUnit:
+                          type: string
+                        line:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            name:
+                              type: string
+                            type:
+                              type: string
+                    validFrom:
+                      type: string
+                      format: date
+                    validUntil:
+                      type: string
+                      format: date
+        '401':
+          description: 'Unauthorized, user not logged in'
+          content: {}
+      security:
+        - cookieAuth: []
+  /users:
+    get:
+      tags:
+        - user
+      summary: Get data for all users
+      operationId: getUsers
+      responses:
+        '200':
+          description: User data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                    email:
+                      type: string
+                    idCard:
+                      type: string
+                    type:
+                      type: string
+        '401':
+          description: 'Unauthorized, user not logged in'
+          content: {}
+      security:
+        - cookieAuth: []
+  /ticket:
+    post:
+      tags:
+        - ticket
+      summary: Add a new ticket type to the system
+      description: 'Add a new ticket type to the system, must have admin previliges'
+      operationId: addTicketType
+      requestBody:
+        description: Ticket details to add
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of ticket type
+                validFor:
+                  type: integer
+                  description: 'Validity of ticket, if not given ticket is valid for a single line'
+                validTimeUnit:
+                  type: string
+                  description: 'Time unit of ticket validity, can be "hour" or "day", required if validFor is given'
+                price:
+                  type: integer
+                  description: Price of ticket in HUF
+                line:
+                  type: string
+                  description: 'Transport line, if not given ticket is valid for any line'
+      responses:
+        '200':
+          description: Ticket successfully bought
+          content: {}
+        '401':
+          description: 'Unauthorized, user not logged in'
+          content: {}
+        '402':
+          description: Payment failed
+          content: {}
+      security:
+        - cookieAuth: []
+  '/ticket/{ticketId}':
+    get:
+      tags:
+        - ticket
+      summary: Get data for specific ticket type
+      operationId: getTicket
+      parameters:
+        - name: ticketId
+          in: path
+          description: ID of ticket to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ticket data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Name of ticket type
+                  type:
+                    type: string
+                    description: 'Type of ticket, can be lineTicket, timeTicket, passTicket'
+                  typeId:
+                    type: string
+                    description: Type ID
+                  validFor:
+                    type: integer
+                    description: 'Validiity of tickets in days, null if valid for single travel'
+                  validTimeUnit:
+                    type: string
+                    description: 'Time unit of ticket validity, can be "hour" or "day"'
+                  line:
+                    type: object
+                    description: 'Line the ticket is valid on, null if valid on all lines'
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      type:
+                        type: string
+                  price:
+                    type: integer
+                    description: Price of ticket in HUF
+        '404':
+          description: Ticket type not found
+          content: {}
+    post:
+      tags:
+        - ticket
+      summary: Change ticket data
+      operationId: changeTicketData
+      parameters:
+        - name: ticketId
+          in: path
+          description: 'ID of ticket to be changed, must be admin'
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Ticket object to be updated
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                validFor:
+                  type: integer
+                  description: 'Validity of ticket, can be null'
+                validTimeUnit:
+                  type: string
+                  description: 'Time unit of ticket validity, can be "hour" or "day"'
+                line:
+                  type: string
+                price:
+                  type: integer
+        required: true
+      responses:
+        '200':
+          description: The ticket has been updated
+          content: {}
+        '400':
+          description: Bad request
+          content: {}
+      security:
+        - cookieAuth: []
+    delete:
+      tags:
+        - ticket
+      summary: Delete ticket
+      operationId: deleteTicket
+      parameters:
+        - name: ticketId
+          in: path
+          description: 'ID of ticket to be deleted, must be admin'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The ticket has been deleted
+          content: {}
+        '401':
+          description: User not logged in
+          content: {}
+      security:
+        - cookieAuth: []
+  '/ticket/{ticketId}/expiry':
+    get:
+      tags:
+        - ticket
+      summary: Get expiry for specific ticket type
+      operationId: getTicketExpiry
+      parameters:
+        - name: ticketId
+          in: path
+          description: ID of ticket to return expiry for
+          required: true
+          schema:
+            type: string
+        - name: start
+          in: query
+          description: 'Start datetime to calculate ticket expiry from, if not given, expiry will be calculated from now, ISO 8601 format'
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Ticket expiry
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  typeId:
+                    type: string
+                    description: Ticket type id
+                  startDate:
+                    type: string
+                    description: 'Start datetime of ticket validity, ISO 8601 format'
+                  expiryDate:
+                    type: string
+                    description: 'End datetime of ticket validity, ISO 8601 format'
+        '404':
+          description: Ticket type not found
+          content: {}
+  /tickets:
+    get:
+      tags:
+        - ticket
+      summary: Get data for available tickets
+      operationId: getTickets
+      responses:
+        '200':
+          description: User data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      description: Name of ticket type
+                    type:
+                      type: string
+                      description: 'Type of ticket, can be lineTicket, timeTicket, passTicket'
+                    typeId:
+                      type: string
+                      description: Type ID
+                    validFor:
+                      type: integer
+                      description: 'Validiity of tickets, null if valid for single travel'
+                    validTimeUnit:
+                      type: string
+                      description: 'Time unit of ticket validity, can be "hour" or "day"'
+                    line:
+                      type: object
+                      description: 'Line the ticket is valid on, null if valid on all lines'
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        type:
+                          type: string
+                    price:
+                      type: integer
+                      description: Price of ticket in HUF
+  /tickets/buy:
+    post:
+      tags:
+        - ticket
+      summary: Buy type of ticket
+      description: 'Buy type of ticket, must be regular user'
+      operationId: buyTicket
+      requestBody:
+        description: Ticket details to buy
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                typeId:
+                  type: string
+                  description: Type id of ticket to buy
+                fromDate:
+                  type: string
+                  description: 'Date for the ticket to be valid from, only required for passes'
+                count:
+                  type: integer
+                  description: Number of tickets to buy (default is 1)
+      responses:
+        '200':
+          description: Ticket successfully bought
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: Id of the specific ticket
+                    ticketType:
+                      type: object
+                      description: Ticket object of the ticket type
+                      properties:
+                        typeId:
+                          type: string
+                        type:
+                          type: string
+                        validFor:
+                          type: integer
+                        validTimeUnit:
+                          type: string
+                        line:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            name:
+                              type: string
+                            type:
+                              type: string
+                    validFrom:
+                      type: string
+                      format: date
+                    validUntil:
+                      type: string
+                      format: date
+        '401':
+          description: 'Unauthorized, user not logged in'
+          content: {}
+        '402':
+          description: Payment failed
+          content: {}
+      security:
+        - cookieAuth: []
+  /tickets/validate:
+    post:
+      tags:
+        - ticket
+      summary: Validate a ticket
+      description: 'Validate a ticket that is only valid for a single transport line, passes don''t need to be validated, must be regular user'
+      operationId: validateTicket
+      requestBody:
+        description: Ticket ID to validate
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                vehicleId:
+                  type: string
+                  description: Vehicle ID
+                ticketId:
+                  type: string
+                  description: 'Ticket ID (optional), if given, will try to validate specific ticket'
+      responses:
+        '200':
+          description: Ticket validated sucessfully
+          content:
+            application/json:
+              schema:
+                type: object
+                description: 'The validated ticket / pass, null if user has no valid ticket'
+                properties:
+                  id:
+                    type: string
+                    description: Id of the specific ticket
+                  ticketType:
+                    type: object
+                    description: Ticket object of the ticket type
+                    properties:
+                      typeId:
+                        type: string
+                      type:
+                        type: string
+                      validFor:
+                        type: integer
+                      validTimeUnit:
+                        type: string
+                      line:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                          name:
+                            type: string
+                          type:
+                            type: string
+                  validFrom:
+                    type: string
+                    format: date
+                  validUntil:
+                    type: string
+                    format: date
+        '401':
+          description: 'Unauthorized, user not logged in'
+          content: {}
+        '500':
+          description: Ticket validation failed because of internal server error
+          content: {}
+      security:
+        - cookieAuth: []
+  /tickets/inspect:
+    post:
+      tags:
+        - ticket
+      summary: Inspect a ticket
+      operationId: inspectTicket
+      description: 'Inspect a ticket, must be inspector'
+      requestBody:
+        description: Ticket ID to be inspected
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: Ticket ID / User ID to inspect
+                vehicleId:
+                  type: string
+                  description: Validation ID of vehicle to inspect on
+      responses:
+        '200':
+          description: Ticket inspected successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    description: 'Status of the ticket, can be "validated", "invalid"'
+                  user:
+                    type: object
+                    description: User the inspected ticket belongs to
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      idCard:
+                        type: string
+                      type:
+                        type: string
+                  tickets:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          description: Id of the specific ticket
+                        ticketType:
+                          type: object
+                          description: Ticket object of the ticket type
+                          properties:
+                            typeId:
+                              type: string
+                            type:
+                              type: string
+                            validFor:
+                              type: integer
+                            validTimeUnit:
+                              type: string
+                            line:
+                              type: object
+                              properties:
+                                id:
+                                  type: string
+                                name:
+                                  type: string
+                                type:
+                                  type: string
+                        validFrom:
+                          type: string
+                          format: date
+                        validUntil:
+                          type: string
+                          format: date
+        '401':
+          description: 'Unauthorized, user not logged in, or is not inspector'
+          content: {}
+        '500':
+          description: Ticket inspection failed because of internal server error
+          content: {}
+      security:
+        - cookieAuth: []
+  /line:
+    post:
+      tags:
+        - transport line
+      summary: Add a new transport line
+      description: 'Add a new ticket transport line, must be admin'
+      operationId: addTransportLine
+      requestBody:
+        description: Transport line details to add
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Line number, must be unique'
+                type:
+                  type: string
+                  description: 'Transport type, e.g bus, tram...'
+      responses:
+        '200':
+          description: Vehicle added successfully
+          content: {}
+        '401':
+          description: 'Unauthorized, user not logged in, or not adming'
+          content: {}
+      security:
+        - cookieAuth: []
+  '/line/{lineId}':
+    get:
+      tags:
+        - transport line
+      summary: Get data for specific transport line
+      operationId: getLine
+      parameters:
+        - name: lineId
+          in: path
+          description: Line ID of transport line to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Transport line data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: Line number
+                  type:
+                    type: string
+                    description: Transport type
+                  id:
+                    type: string
+                    description: Line ID
+        '404':
+          description: Transport line not found
+          content: {}
+    post:
+      tags:
+        - transport line
+      summary: Change transport line data
+      operationId: changeLineData
+      description: 'Change transport line data, must be admin'
+      parameters:
+        - name: lineId
+          in: path
+          description: Line ID of transport line to be changed
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Line object to be updated
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                type:
+                  type: integer
+        required: true
+      responses:
+        '200':
+          description: The line has been updated
+          content: {}
+        '400':
+          description: Bad request
+          content: {}
+      security:
+        - cookieAuth: []
+    delete:
+      tags:
+        - transport line
+      summary: Delete transport line
+      operationId: deleteLine
+      description: 'Delete transport line, must be admin'
+      parameters:
+        - name: lineId
+          in: path
+          description: Line ID of transport line to be deleted
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The line has been deleted
+          content: {}
+        '400':
+          description: Bad request
+          content: {}
+      security:
+        - cookieAuth: []
+  /lines:
+    get:
+      tags:
+        - transport line
+      summary: Get data for all transport lines
+      operationId: getTransportLines
+      responses:
+        '200':
+          description: Transport line data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      description: Line number
+                    type:
+                      type: string
+                      description: Vehicle type
+                    id:
+                      type: string
+                      description: Line ID
+  /vehicle:
+    post:
+      tags:
+        - vehicle
+      summary: Add a new vehicle
+      description: 'Add a new vehicle to the sysetem, must be admin'
+      operationId: addVehicle
+      requestBody:
+        description: Vehicle line details to add
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                licencePlate:
+                  type: string
+                  description: 'Licence plate, must be unique'
+                line:
+                  type: string
+                  description: Transport line id
+                type:
+                  type: string
+                  description: 'Type of vehicle, e.g. bus, tram, etc.'
+      responses:
+        '200':
+          description: Vehicle added successfully
+          content: {}
+        '401':
+          description: 'Unauthorized, user not logged in, or not admin'
+          content: {}
+      security:
+        - cookieAuth: []
+  '/vehicle/{vehicleId}':
+    get:
+      tags:
+        - vehicle
+      summary: Get data for specific vehicle
+      operationId: getVehicle
+      parameters:
+        - name: vehicleId
+          in: path
+          description: ID of vehicle to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Vehicle data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  licencePlate:
+                    type: string
+                    description: Licence plate
+                  line:
+                    type: object
+                    description: 'Line the vehicle belongs to, can be null'
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                      type:
+                        type: string
+                  id:
+                    type: string
+                    description: Vehcile ID
+                  validateId:
+                    type: string
+                    description: Vehicle ID to validate ticets with (can be changed)
+        '404':
+          description: Vehicle line not found
+          content: {}
+    post:
+      tags:
+        - vehicle
+      summary: Change vehicle data
+      operationId: changeVehicleData
+      description: 'Change vehicle data, must be admin'
+      parameters:
+        - name: vehicleId
+          in: path
+          description: ID if vehicle to be changed
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Vehicle object to be updated
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                licencePlate:
+                  type: string
+                line:
+                  type: string
+        required: true
+      responses:
+        '200':
+          description: The vehicle has been updated
+          content: {}
+        '400':
+          description: Bad request
+          content: {}
+      security:
+        - cookieAuth: []
+    delete:
+      tags:
+        - vehicle
+      summary: Delete vehicle
+      operationId: deleteVehicle
+      description: 'Delete vehicle, must be admin'
+      parameters:
+        - name: vehicleId
+          in: path
+          description: ID of vehicle to be deleted
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The vehicle has been deleted
+          content: {}
+        '401':
+          description: User not logged in
+          content: {}
+      security:
+        - cookieAuth: []
+  '/vehicle/{vehicleId}/newid':
+    post:
+      tags:
+        - vehicle
+      summary: Generate new vehcile ID to validate tickets with
+      operationId: newVehicleId
+      description: 'Generate new vehicle ID, must be admin'
+      parameters:
+        - name: vehicleId
+          in: path
+          description: ID if vehicle to generate new ID for
+          required: true
+          schema:
+            type: string
+      responses:
+        '302':
+          description: 'ID generation was successful, edirects to /vehicle/{vehicleId}'
+          content: {}
+        '400':
+          description: Bad request
+          content: {}
+      security:
+        - cookieAuth: []
+  /vehicles:
+    get:
+      tags:
+        - vehicle
+      summary: Get data for all transport vehicles
+      operationId: getVehicles
+      responses:
+        '200':
+          description: Vehicle data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      description: 'Type of vehicle e.g. bus, tram, etc.'
+                    licencePlate:
+                      type: string
+                    line:
+                      type: object
+                      description: 'Line the vehicle belongs to, can be null'
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        type:
+                          type: string
+                    id:
+                      type: string
+                      description: Vehcile ID
+                    validateId:
+                      type: string
+                      description: Vehicle ID to validate ticets with (can be changed)
+  /stats/sales:
+    get:
+      tags:
+        - stats
+      summary: Get sales statistics
+      description: 'Get number of tickets sold / day, must be admin'
+      operationId: getSalesStats
+      responses:
+        '200':
+          description: Sales statistics
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    sold:
+                      type: integer
+                      description: Number of tickets sold on a given day
+                    day:
+                      type: string
+                      description: Day of the data point (yyyy-mm-dd format)
+        '401':
+          description: 'Unauthorized, user not logged in, or not admin'
+          content: {}
+      security:
+        - cookieAuth: []
+  /stats/registrations:
+    get:
+      tags:
+        - stats
+      summary: Get registration statistics
+      description: 'Get number of tickets sold / day, must be admin'
+      operationId: getRegistrationStats
+      responses:
+        '200':
+          description: Registration statistics
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    sold:
+                      type: integer
+                      description: Number of users registered a given day
+                    day:
+                      type: string
+                      description: Day of the data point (yyyy-mm-dd format)
+        '401':
+          description: 'Unauthorized, user not logged in, or not admin'
+          content: {}
+      security:
+        - cookieAuth: []
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          description: 'Unique id of user, generated when registering'
+        email:
+          type: string
+          description: Email address of user
+        name:
+          type: string
+          description: Full name of user
+        idCard:
+          type: string
+          description: 'ID Card number of user, for verifying by the inspector'
+        password:
+          type: string
+          description: Password of the user (salted + hashed before storing)
+        type:
+          type: string
+          description: 'User type, can be user, inspector, admin'
+        tickets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ticket'
+    Ticket:
+      type: object
+      properties:
+        typeId:
+          type: string
+          description: 'ID of ticket type, generated when adding ticket'
+        name:
+          type: string
+          description: Name of ticket type
+        type:
+          type: string
+          description: 'Type of ticket, can be lineTicket, timeTicket, passTicket'
+        validFor:
+          type: integer
+          description: Interval of ticket validity (can be null)
+        validTimeUnit:
+          type: string
+          description: 'Time unit of ticket validity, can be "hour" or "day"'
+        price:
+          type: integer
+          description: Price of ticket in HUF
+        line:
+          $ref: '#/components/schemas/Line'
+          description: Line the ticket is valid for (can be null)
+    Line:
+      type: object
+      properties:
+        id:
+          type: string
+          description: 'ID of transport line, generated when adding line'
+        type:
+          type: string
+          description: 'Type of line, e.g. bus, tram, etc.'
+        name:
+          type: string
+          description: Name of the line e.g. M3
+    Vehicle:
+      type: object
+      properties:
+        id:
+          type: string
+          description: 'ID of vehicle, generated when adding vehicle'
+        licencePlate:
+          type: string
+          description: Licence plate of vehicle
+        line:
+          $ref: '#/components/schemas/Line'
+          description: Line the vehicle belongs to
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: session_id
+      description: 'Session id will be provided in cookie on login request, and is required for any future requests that requires authorization'

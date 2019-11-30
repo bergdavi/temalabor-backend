@@ -1,0 +1,22 @@
+{
+  "development": {
+    "username": "sql7310987",
+    "password": "jHvpdRut6M",
+    "database": "sql7310987",
+    "host": "sql7.freesqldatabase.com",
+    "dialect": "mysql",
+    "operatorsAliases": false
+  },
+  "test": {
+    "dialect": "sqlite",
+    "storage": "data/dev-db.sqlite3"
+  },
+  "production": {
+    "username": "sql7310987",
+    "password": "jHvpdRut6M",
+    "database": "sql7310987",
+    "host": "sql7.freesqldatabase.com",
+    "dialect": "mysql",
+    "operatorsAliases": false
+  }
+}
